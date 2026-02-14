@@ -1,0 +1,67 @@
+{
+  "mode": "embedding",
+  "total_queries": 5,
+  "avg_context_precision": 0.4191,
+  "avg_answer_relevancy": 0.7751,
+  "avg_faithfulness": 0.5804,
+  "avg_retrieval_ms": 234.7,
+  "avg_rerank_ms": 383.9,
+  "avg_generation_ms": 999.8,
+  "results": [
+    {
+      "query": "How is mean-variance optimization applied in portfolio construction?",
+      "context_precision": 0.5329,
+      "answer_relevancy": 0.7924,
+      "faithfulness": 0.7916,
+      "retrieval_time_ms": 388.6,
+      "rerank_time_ms": 1163.1,
+      "generation_time_ms": 933.4,
+      "num_chunks": 3,
+      "num_citations": 3
+    },
+    {
+      "query": "What are the limitations of the Markowitz framework?",
+      "context_precision": 0.3476,
+      "answer_relevancy": 0.6879,
+      "faithfulness": 0.5284,
+      "retrieval_time_ms": 256.3,
+      "rerank_time_ms": 199.4,
+      "generation_time_ms": 791.8,
+      "num_chunks": 3,
+      "num_citations": 3
+    },
+    {
+      "query": "How do transaction costs affect optimal portfolio rebalancing?",
+      "context_precision": 0.4535,
+      "answer_relevancy": 0.7562,
+      "faithfulness": 0.6208,
+      "retrieval_time_ms": 264.7,
+      "rerank_time_ms": 179.3,
+      "generation_time_ms": 970.6,
+      "num_chunks": 3,
+      "num_citations": 3
+    },
+    {
+      "query": "What methods are used for portfolio risk budgeting?",
+      "context_precision": 0.465,
+      "answer_relevancy": 0.8238,
+      "faithfulness": 0.5569,
+      "retrieval_time_ms": 18.3,
+      "rerank_time_ms": 185.3,
+      "generation_time_ms": 724.8,
+      "num_chunks": 3,
+      "num_citations": 3
+    },
+    {
+      "query": "How is Value at Risk (VaR) calculated using historical simulation?",
+      "context_precision": 0.2964,
+      "answer_relevancy": 0.815,
+      "faithfulness": 0.4044,
+      "retrieval_time_ms": 245.6,
+      "rerank_time_ms": 192.3,
+      "generation_time_ms": 1578.2,
+      "num_chunks": 3,
+      "num_citations": 3
+    }
+  ]
+}

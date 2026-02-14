@@ -1,29 +1,27 @@
 """
-embeddings.py — PDF text extraction, formula-aware chunking, and FAISS index building
-for the finance research portal.
+embeddings.py — PDF extraction, section-aware chunking, FAISS + BM25 indexing.
 
-Key design decisions:
-  • PyMuPDF (fitz) for extraction — preserves layout and unicode math symbols.
-  • Regex-based detection of math/formula blocks so the chunker never splits
-    mid-equation (LaTeX delimiters, Unicode math runs, aligned environments).
-  • Overlapping sliding-window chunker that respects formula boundaries.
-  • sentence-transformers + FAISS-CPU for dense retrieval.
-  • Incremental index updates — only new papers are processed on subsequent runs.
-  • Resume support — interrupted builds pick up where they left off.
-  • Auto full-rebuild if embedding model or chunk params change.
+Phase 2 upgrades:
+  • Section-aware chunking — detects paper sections (Abstract, Introduction,
+    Methodology, Results, etc.) and never splits across section boundaries.
+  • BM25 sparse index alongside FAISS dense index for hybrid retrieval.
+  • Chunk metadata includes section name + page number for structured citations.
 """
 
 import os
 import re
 import json
 import logging
+import pickle
 from dataclasses import dataclass
 from typing import Optional
+from pathlib import Path
 
 import fitz  # PyMuPDF
 import numpy as np
 import faiss
 from sentence_transformers import SentenceTransformer
+from rank_bm25 import BM25Okapi
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(message)s")
 log = logging.getLogger(__name__)
@@ -31,16 +29,15 @@ log = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
-EMBED_MODEL_NAME = "all-MiniLM-L6-v2"   # 384-dim, fast, good quality
-CHUNK_SIZE       = 500   # target tokens (≈ words) per chunk
-CHUNK_OVERLAP    = 80    # overlap tokens between consecutive chunks
-INDEX_DIR        = os.path.join(os.path.dirname(__file__), "..", "index")
-LIBRARY_DIR      = os.path.join(os.path.dirname(__file__), "..", "quant_library")
-INDEX_CONFIG     = "index_config.json"   # tracks model + params for rebuild detection
+EMBED_MODEL_NAME = "all-MiniLM-L6-v2"
+CHUNK_SIZE       = 500
+CHUNK_OVERLAP    = 80
+PROJECT_ROOT     = Path(__file__).resolve().parent.parent
+INDEX_DIR        = str(PROJECT_ROOT / "index")
+LIBRARY_DIR      = str(PROJECT_ROOT / "quant_library")
+INDEX_CONFIG     = "index_config.json"
 
-# ---------------------------------------------------------------------------
-# Data classes
-# ---------------------------------------------------------------------------
+
 @dataclass
 class PaperMeta:
     title: str
@@ -53,42 +50,34 @@ class Chunk:
     text: str
     chunk_index: int
     paper: PaperMeta
+    section: str = "Unknown"
+    page_number: int = -1
     start_char: int = 0
     end_char: int = 0
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# 1.  PDF TEXT EXTRACTION
+# 1.  PDF TEXT EXTRACTION (page-aware)
 # ═══════════════════════════════════════════════════════════════════════════
 
-def extract_text_from_pdf(filepath: str) -> str:
-    """
-    Extract text from a PDF while preserving mathematical notation as much
-    as possible.  PyMuPDF keeps Unicode math symbols (∑, ∫, σ, √, etc.)
-    intact, which is important for quant papers.
-    """
+def extract_text_from_pdf(filepath: str) -> list[dict]:
     doc = fitz.open(filepath)
-    pages: list[str] = []
-
-    for page in doc:
+    pages = []
+    for i, page in enumerate(doc):
         text = page.get_text("text")
-        pages.append(text)
-
+        text = re.sub(r"[ \t]+", " ", text)
+        text = re.sub(r"\n{3,}", "\n\n", text)
+        pages.append({"page": i + 1, "text": text.strip()})
     doc.close()
-    full_text = "\n\n".join(pages)
-
-    # Light cleanup — collapse excessive whitespace but keep paragraph breaks
-    full_text = re.sub(r"[ \t]+", " ", full_text)
-    full_text = re.sub(r"\n{3,}", "\n\n", full_text)
-    return full_text.strip()
+    return pages
 
 
 def extract_all_papers(library_dir: str = LIBRARY_DIR) -> list[dict]:
-    """
-    Walk the library directory, extract text from every PDF, and return
-    a list of {meta, text} dicts.
-    """
     papers = []
+    if not os.path.isdir(library_dir):
+        log.warning(f"Library dir not found: {library_dir}")
+        return papers
+
     for cat_folder in sorted(os.listdir(library_dir)):
         cat_path = os.path.join(library_dir, cat_folder)
         if not os.path.isdir(cat_path):
@@ -99,14 +88,14 @@ def extract_all_papers(library_dir: str = LIBRARY_DIR) -> list[dict]:
             fpath = os.path.join(cat_path, fname)
             log.info(f"📄 Extracting: {fpath}")
             try:
-                text = extract_text_from_pdf(fpath)
+                pages = extract_text_from_pdf(fpath)
                 meta = PaperMeta(
                     title=fname.replace(".pdf", "").replace("_", " "),
                     category=cat_folder,
                     filename=fname,
                     filepath=fpath,
                 )
-                papers.append({"meta": meta, "text": text})
+                papers.append({"meta": meta, "pages": pages})
             except Exception as e:
                 log.warning(f"⚠️  Failed on {fpath}: {e}")
     log.info(f"Extracted {len(papers)} papers total.")
@@ -114,91 +103,100 @@ def extract_all_papers(library_dir: str = LIBRARY_DIR) -> list[dict]:
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# 2.  FORMULA-AWARE CHUNKING
+# 2.  SECTION-AWARE CHUNKING
 # ═══════════════════════════════════════════════════════════════════════════
 
-# ---------- regex patterns that identify "math zones" ----------
+_SECTION_PATTERNS = re.compile(
+    r"^\s*(?:\d+\.?\s*)?"
+    r"(Abstract|Introduction|Background|Related\s+Work|Literature\s+Review|"
+    r"Methodology|Methods?|Model|Framework|Data(?:\s+and\s+Methods?)?|"
+    r"Theoretical\s+Framework|Problem\s+(?:Setup|Formulation|Statement)|"
+    r"Approach|Algorithm|Implementation|"
+    r"Results?|Experiments?|Empirical\s+(?:Results?|Analysis)|Findings|"
+    r"Analysis|Discussion|Evaluation|Performance|"
+    r"Conclusion|Conclusions?|Summary|"
+    r"Future\s+Work|Limitations|"
+    r"Appendix|Appendices|References|Bibliography|"
+    r"Acknowledgm?ents?|Notation|Preliminaries|"
+    r"Proof|Theorem|Lemma|Proposition|Corollary|Remark|Definition|"
+    r"Portfolio\s+(?:Construction|Optimization|Selection)|"
+    r"Risk\s+(?:Management|Measures?|Analysis)|"
+    r"Market\s+(?:Model|Microstructure|Impact)|"
+    r"Pricing|Hedging|Calibration|Backtesting|Simulation)"
+    r"\s*$",
+    re.IGNORECASE | re.MULTILINE,
+)
+
 _DISPLAY_MATH = re.compile(
-    r"(\$\$.*?\$\$"
-    r"|\\\[.*?\\\]"
-    r"|\\begin\{(equation|align|gather|multline|"
-    r"eqnarray|split|cases)\*?\}.*?"
+    r"(\$\$.*?\$\$|\\\[.*?\\\]"
+    r"|\\begin\{(equation|align|gather|multline|eqnarray|split|cases)\*?\}.*?"
     r"\\end\{\2\*?\})",
     re.DOTALL,
 )
-
 _INLINE_MATH = re.compile(r"(?<!\$)\$(?!\$)(.+?)(?<!\$)\$(?!\$)")
-
 _UNICODE_MATH = re.compile(
-    r"["
-    r"\u0391-\u03C9"       # Greek letters  (Α-ω)
-    r"\u2200-\u22FF"       # Mathematical Operators block
-    r"\u2A00-\u2AFF"       # Supplemental Mathematical Operators
-    r"\u00B1\u00D7\u00F7"  # ± × ÷
-    r"\u221A-\u221E"       # √ ∛ ∜ ∝ ∞
-    r"=<>≤≥≠≈∝∂∇∑∏∫"
-    r"]{3,}"               # 3+ consecutive math-ish characters
+    r"[\u0391-\u03C9\u2200-\u22FF\u2A00-\u2AFF"
+    r"\u00B1\u00D7\u00F7\u221A-\u221E"
+    r"=<>≤≥≠≈∝∂∇∑∏∫]{3,}"
 )
 
 
 def _is_inside_math(text: str, pos: int) -> bool:
-    """Return True if *pos* falls inside any detected math span."""
-    for pattern in (_DISPLAY_MATH, _INLINE_MATH, _UNICODE_MATH):
-        for m in pattern.finditer(text):
+    for pat in (_DISPLAY_MATH, _INLINE_MATH, _UNICODE_MATH):
+        for m in pat.finditer(text):
             if m.start() <= pos < m.end():
                 return True
     return False
 
 
-def _find_safe_split(text: str, target_pos: int, window: int = 120) -> int:
-    """
-    Starting from *target_pos*, search for the nearest paragraph break or
-    sentence boundary that is NOT inside a math expression.
-
-    Priority:  paragraph break  >  sentence end (. or ;)  >  any whitespace
-    Falls back to *target_pos* if nothing better is found.
-    """
-    lo = max(0, target_pos - window)
-    hi = min(len(text), target_pos + window)
+def _find_safe_split(text: str, target: int, window: int = 120) -> int:
+    lo, hi = max(0, target - window), min(len(text), target + window)
     region = text[lo:hi]
-
-    candidates: list[tuple[int, int]] = []  # (abs_pos, priority)
-
+    candidates = []
     for m in re.finditer(r"\n\n+", region):
-        abs_pos = lo + m.end()
-        candidates.append((abs_pos, 0))
-
+        candidates.append((lo + m.end(), 0))
     for m in re.finditer(r"[.;]\s", region):
-        abs_pos = lo + m.end()
-        candidates.append((abs_pos, 1))
-
+        candidates.append((lo + m.end(), 1))
     for m in re.finditer(r"\s", region):
-        abs_pos = lo + m.end()
-        candidates.append((abs_pos, 2))
-
-    candidates.sort(key=lambda c: (c[1], abs(c[0] - target_pos)))
-
+        candidates.append((lo + m.end(), 2))
+    candidates.sort(key=lambda c: (c[1], abs(c[0] - target)))
     for abs_pos, _ in candidates:
         if not _is_inside_math(text, abs_pos):
             return abs_pos
+    return target
 
-    return target_pos
+
+def _detect_sections(full_text: str) -> list[dict]:
+    matches = list(_SECTION_PATTERNS.finditer(full_text))
+    if not matches:
+        return [{"section_name": "Full Text", "text": full_text,
+                 "start_char": 0, "end_char": len(full_text)}]
+
+    sections = []
+    if matches[0].start() > 0:
+        pre = full_text[:matches[0].start()].strip()
+        if pre:
+            sections.append({"section_name": "Header/Preamble", "text": pre,
+                             "start_char": 0, "end_char": matches[0].start()})
+
+    for i, match in enumerate(matches):
+        name = re.sub(r"^\d+\.?\s*", "", match.group(0).strip()).strip()
+        start = match.end()
+        end = matches[i + 1].start() if i + 1 < len(matches) else len(full_text)
+        text = full_text[start:end].strip()
+        if text:
+            sections.append({"section_name": name, "text": text,
+                             "start_char": start, "end_char": end})
+    return sections
 
 
-def chunk_text(text: str,
-               chunk_size: int = CHUNK_SIZE,
-               overlap: int = CHUNK_OVERLAP) -> list[str]:
-    """
-    Split *text* into overlapping chunks of roughly *chunk_size* words,
-    choosing split points that avoid breaking math expressions.
-    """
+def _chunk_section_text(text: str, chunk_size: int = CHUNK_SIZE,
+                        overlap: int = CHUNK_OVERLAP) -> list[str]:
     words = text.split()
     if len(words) <= chunk_size:
         return [text]
 
-    chunks: list[str] = []
-    word_starts: list[int] = []
-    idx = 0
+    chunks, word_starts, idx = [], [], 0
     for w in words:
         pos = text.index(w, idx)
         word_starts.append(pos)
@@ -208,198 +206,187 @@ def chunk_text(text: str,
     i = 0
     while i < len(words):
         end_word = min(i + chunk_size, len(words))
-
-        start_char = word_starts[i]
-        end_char = (word_starts[end_word] if end_word < len(words)
-                    else len(text))
-
+        sc = word_starts[i]
+        ec = word_starts[end_word] if end_word < len(words) else len(text)
         if end_word < len(words):
-            end_char = _find_safe_split(text, end_char)
-
-        chunk = text[start_char:end_char].strip()
+            ec = _find_safe_split(text, ec)
+        chunk = text[sc:ec].strip()
         if chunk:
             chunks.append(chunk)
-
         if end_word >= len(words):
             break
         i += step
-
     return chunks
 
 
-def chunk_paper(paper: dict,
-                chunk_size: int = CHUNK_SIZE,
+def chunk_paper(paper: dict, chunk_size: int = CHUNK_SIZE,
                 overlap: int = CHUNK_OVERLAP) -> list[Chunk]:
-    """
-    Chunk a single paper dict (with 'meta' and 'text' keys) and return
-    a list of Chunk objects.
-    """
-    raw_chunks = chunk_text(paper["text"], chunk_size, overlap)
     meta = paper["meta"]
-    result: list[Chunk] = []
+    pages = paper["pages"]
+    full_text = "\n\n".join(p["text"] for p in pages)
 
+    page_boundaries = []
     offset = 0
-    for idx, ct in enumerate(raw_chunks):
-        start = paper["text"].find(ct, offset)
-        end = start + len(ct) if start != -1 else -1
-        result.append(Chunk(
-            text=ct,
-            chunk_index=idx,
-            paper=meta,
-            start_char=max(start, 0),
-            end_char=max(end, 0),
-        ))
-        if start != -1:
-            offset = start + 1
+    for p in pages:
+        page_boundaries.append((offset, offset + len(p["text"]), p["page"]))
+        offset += len(p["text"]) + 2
 
+    def _get_page(char_pos):
+        for s, e, pn in page_boundaries:
+            if s <= char_pos < e:
+                return pn
+        return -1
+
+    sections = _detect_sections(full_text)
+    result, gidx = [], 0
+
+    for sec in sections:
+        for ct in _chunk_section_text(sec["text"], chunk_size, overlap):
+            start = sec["text"].find(ct)
+            abs_start = sec["start_char"] + (start if start != -1 else 0)
+            result.append(Chunk(
+                text=ct, chunk_index=gidx, paper=meta,
+                section=sec["section_name"],
+                page_number=_get_page(abs_start),
+                start_char=abs_start, end_char=abs_start + len(ct),
+            ))
+            gidx += 1
     return result
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# 3.  EMBEDDING GENERATION + FAISS INDEX
+# 3.  INDEX BUILD + SEARCH
 # ═══════════════════════════════════════════════════════════════════════════
 
 _model_cache: dict[str, SentenceTransformer] = {}
 
-
 def get_model(name: str = EMBED_MODEL_NAME) -> SentenceTransformer:
-    """Load (or return cached) sentence-transformer model."""
     if name not in _model_cache:
-        log.info(f"🔄 Loading embedding model: {name}")
+        log.info(f"🔄 Loading model: {name}")
         _model_cache[name] = SentenceTransformer(name)
     return _model_cache[name]
 
 
-def embed_chunks(chunks: list[Chunk],
-                 model_name: str = EMBED_MODEL_NAME,
+def embed_chunks(chunks: list[Chunk], model_name: str = EMBED_MODEL_NAME,
                  batch_size: int = 64) -> np.ndarray:
-    """
-    Encode chunk texts → numpy array of shape (N, dim).
-    """
     model = get_model(model_name)
     texts = [c.text for c in chunks]
-    log.info(f"⚡ Embedding {len(texts)} chunks (batch_size={batch_size})…")
-    embeddings = model.encode(texts, batch_size=batch_size,
-                              show_progress_bar=True, normalize_embeddings=True)
-    return np.array(embeddings, dtype="float32")
+    log.info(f"⚡ Embedding {len(texts)} chunks…")
+    emb = model.encode(texts, batch_size=batch_size,
+                       show_progress_bar=True, normalize_embeddings=True)
+    return np.array(emb, dtype="float32")
 
 
 def build_faiss_index(embeddings: np.ndarray) -> faiss.IndexFlatIP:
-    """
-    Build a FAISS index.  IndexFlatIP (inner-product / cosine sim)
-    because embeddings are L2-normalized.
-    """
     dim = embeddings.shape[1]
-    index = faiss.IndexFlatIP(dim)
-    index.add(embeddings)
-    log.info(f"✅ FAISS index built — {index.ntotal} vectors, dim={dim}")
-    return index
+    idx = faiss.IndexFlatIP(dim)
+    idx.add(embeddings)
+    log.info(f"✅ FAISS: {idx.ntotal} vectors, dim={dim}")
+    return idx
 
 
-def save_index(index: faiss.IndexFlatIP,
-               chunks: list[Chunk],
-               index_dir: str = INDEX_DIR,
-               model_name: str = EMBED_MODEL_NAME,
-               chunk_size: int = CHUNK_SIZE,
-               overlap: int = CHUNK_OVERLAP) -> None:
-    """Persist FAISS index + chunk metadata + build config to disk."""
+def build_bm25_index(chunks: list[Chunk]) -> BM25Okapi:
+    tokenized = [c.text.lower().split() for c in chunks]
+    bm25 = BM25Okapi(tokenized)
+    log.info(f"✅ BM25: {len(tokenized)} docs")
+    return bm25
+
+
+def _chunk_to_dict(c: Chunk) -> dict:
+    return {
+        "text": c.text, "chunk_index": c.chunk_index,
+        "section": c.section, "page_number": c.page_number,
+        "start_char": c.start_char, "end_char": c.end_char,
+        "paper_title": c.paper.title, "paper_category": c.paper.category,
+        "paper_filename": c.paper.filename, "paper_filepath": c.paper.filepath,
+    }
+
+def _dict_to_chunk(m: dict) -> Chunk:
+    return Chunk(
+        text=m["text"], chunk_index=m["chunk_index"],
+        section=m.get("section", "Unknown"), page_number=m.get("page_number", -1),
+        start_char=m["start_char"], end_char=m["end_char"],
+        paper=PaperMeta(title=m["paper_title"], category=m["paper_category"],
+                        filename=m["paper_filename"], filepath=m["paper_filepath"]),
+    )
+
+
+def save_index(faiss_idx, bm25, chunks, index_dir=INDEX_DIR,
+               model_name=EMBED_MODEL_NAME, chunk_size=CHUNK_SIZE, overlap=CHUNK_OVERLAP):
     os.makedirs(index_dir, exist_ok=True)
-
-    faiss.write_index(index, os.path.join(index_dir, "faiss.index"))
-
-    meta = []
-    for c in chunks:
-        d = {
-            "text": c.text,
-            "chunk_index": c.chunk_index,
-            "start_char": c.start_char,
-            "end_char": c.end_char,
-            "paper_title": c.paper.title,
-            "paper_category": c.paper.category,
-            "paper_filename": c.paper.filename,
-            "paper_filepath": c.paper.filepath,
-        }
-        meta.append(d)
-
+    faiss.write_index(faiss_idx, os.path.join(index_dir, "faiss.index"))
+    with open(os.path.join(index_dir, "bm25.pkl"), "wb") as f:
+        pickle.dump(bm25, f)
+    meta = [_chunk_to_dict(c) for c in chunks]
     with open(os.path.join(index_dir, "chunks_meta.json"), "w") as f:
         json.dump(meta, f, indent=2)
-
-    # Save build config so we can detect model/param changes later
-    config = {
-        "model_name": model_name,
-        "chunk_size": chunk_size,
-        "overlap": overlap,
-        "embedding_dim": index.d,
-        "total_vectors": index.ntotal,
-    }
+    config = {"model_name": model_name, "chunk_size": chunk_size,
+              "overlap": overlap, "embedding_dim": faiss_idx.d,
+              "total_vectors": faiss_idx.ntotal}
     with open(os.path.join(index_dir, INDEX_CONFIG), "w") as f:
         json.dump(config, f, indent=2)
+    log.info(f"💾 Saved to {index_dir}/")
 
-    log.info(f"💾 Index + metadata + config saved to {index_dir}/")
 
-
-def load_index(index_dir: str = INDEX_DIR):
-    """Load FAISS index and chunk metadata from disk."""
+def load_index(index_dir=INDEX_DIR):
     idx_path = os.path.join(index_dir, "faiss.index")
-    meta_path = os.path.join(index_dir, "chunks_meta.json")
-
     if not os.path.exists(idx_path):
-        raise FileNotFoundError(f"No FAISS index at {idx_path}")
-
-    index = faiss.read_index(idx_path)
-    with open(meta_path) as f:
+        raise FileNotFoundError(f"No index at {idx_path}")
+    faiss_idx = faiss.read_index(idx_path)
+    with open(os.path.join(index_dir, "chunks_meta.json")) as f:
         chunks_meta = json.load(f)
+    bm25 = None
+    bm25_path = os.path.join(index_dir, "bm25.pkl")
+    if os.path.exists(bm25_path):
+        with open(bm25_path, "rb") as f:
+            bm25 = pickle.load(f)
+    return faiss_idx, bm25, chunks_meta
 
-    log.info(f"📂 Loaded index ({index.ntotal} vectors) + {len(chunks_meta)} chunk records")
-    return index, chunks_meta
 
-
-def load_config(index_dir: str = INDEX_DIR) -> Optional[dict]:
-    """Load the build config (model name, chunk params) if it exists."""
-    cfg_path = os.path.join(index_dir, INDEX_CONFIG)
-    if not os.path.exists(cfg_path):
+def load_config(index_dir=INDEX_DIR) -> Optional[dict]:
+    p = os.path.join(index_dir, INDEX_CONFIG)
+    if not os.path.exists(p):
         return None
-    with open(cfg_path) as f:
+    with open(p) as f:
         return json.load(f)
 
 
-def _needs_full_rebuild(index_dir: str,
-                        model_name: str,
-                        chunk_size: int,
-                        overlap: int) -> bool:
-    """
-    Check if a full rebuild is needed because the embedding model or
-    chunking parameters changed since the last build.
-    """
+def _needs_rebuild(index_dir, model_name, chunk_size, overlap):
     cfg = load_config(index_dir)
-    if cfg is None:
-        return False  # no existing index
-    if cfg.get("model_name") != model_name:
-        log.warning(f"⚠️  Model changed: {cfg.get('model_name')} → {model_name}. Full rebuild required.")
-        return True
-    if cfg.get("chunk_size") != chunk_size or cfg.get("overlap") != overlap:
-        log.warning(f"⚠️  Chunk params changed. Full rebuild required.")
-        return True
-    return False
+    if not cfg:
+        return False
+    return (cfg.get("model_name") != model_name or
+            cfg.get("chunk_size") != chunk_size or
+            cfg.get("overlap") != overlap)
 
 
-def search(query: str,
-           top_k: int = 5,
-           index_dir: str = INDEX_DIR,
-           model_name: str = EMBED_MODEL_NAME) -> list[dict]:
-    """
-    Embed a query string and return the top-k most similar chunks.
-    """
-    index, chunks_meta = load_index(index_dir)
+# ── Hybrid search ──────────────────────────────────────────────────────
+
+def hybrid_search(query: str, top_k: int = 10, dense_weight: float = 0.6,
+                  index_dir: str = INDEX_DIR, model_name: str = EMBED_MODEL_NAME) -> list[dict]:
+    faiss_idx, bm25, chunks_meta = load_index(index_dir)
     model = get_model(model_name)
 
     q_vec = model.encode([query], normalize_embeddings=True).astype("float32")
-    scores, indices = index.search(q_vec, top_k)
+    fetch_k = min(top_k * 3, faiss_idx.ntotal)
+    dense_scores, dense_ids = faiss_idx.search(q_vec, fetch_k)
 
+    bm25_scores = bm25.get_scores(query.lower().split()) if bm25 else np.zeros(len(chunks_meta))
+
+    rrf_k, rrf = 60, {}
+    for rank, idx in enumerate(dense_ids[0]):
+        if idx >= 0:
+            rrf[int(idx)] = rrf.get(int(idx), 0) + dense_weight / (rrf_k + rank + 1)
+
+    sparse_ranking = np.argsort(-bm25_scores)[:fetch_k]
+    sw = 1.0 - dense_weight
+    for rank, idx in enumerate(sparse_ranking):
+        if bm25_scores[idx] > 0:
+            rrf[int(idx)] = rrf.get(int(idx), 0) + sw / (rrf_k + rank + 1)
+
+    sorted_r = sorted(rrf.items(), key=lambda x: x[1], reverse=True)[:top_k]
     results = []
-    for rank, (score, idx) in enumerate(zip(scores[0], indices[0])):
-        if idx < 0:
-            continue
+    for rank, (idx, score) in enumerate(sorted_r):
         entry = dict(chunks_meta[idx])
         entry["score"] = float(score)
         entry["rank"] = rank + 1
@@ -407,240 +394,75 @@ def search(query: str,
     return results
 
 
-# ═══════════════════════════════════════════════════════════════════════════
-# 4.  FULL REBUILD  (wipes and recreates everything)
-# ═══════════════════════════════════════════════════════════════════════════
+def dense_search(query, top_k=5, index_dir=INDEX_DIR, model_name=EMBED_MODEL_NAME):
+    faiss_idx, _, meta = load_index(index_dir)
+    model = get_model(model_name)
+    q = model.encode([query], normalize_embeddings=True).astype("float32")
+    scores, ids = faiss_idx.search(q, top_k)
+    results = []
+    for rank, (s, i) in enumerate(zip(scores[0], ids[0])):
+        if i < 0: continue
+        e = dict(meta[i]); e["score"] = float(s); e["rank"] = rank + 1
+        results.append(e)
+    return results
 
-def build_full_index(library_dir: str = LIBRARY_DIR,
-                     index_dir: str = INDEX_DIR,
-                     chunk_size: int = CHUNK_SIZE,
-                     overlap: int = CHUNK_OVERLAP,
-                     model_name: str = EMBED_MODEL_NAME) -> dict:
-    """
-    End-to-end: extract → chunk → embed → index → save.
-    Wipes any existing index and rebuilds from scratch.
-    """
+
+# ── Build pipelines ────────────────────────────────────────────────────
+
+def build_full_index(library_dir=LIBRARY_DIR, index_dir=INDEX_DIR,
+                     chunk_size=CHUNK_SIZE, overlap=CHUNK_OVERLAP,
+                     model_name=EMBED_MODEL_NAME) -> dict:
     papers = extract_all_papers(library_dir)
     if not papers:
         return {"status": "error", "message": "No papers found"}
-
-    all_chunks: list[Chunk] = []
+    all_chunks = []
     for p in papers:
         all_chunks.extend(chunk_paper(p, chunk_size, overlap))
     log.info(f"🔪 {len(all_chunks)} chunks from {len(papers)} papers")
-
-    embeddings = embed_chunks(all_chunks, model_name)
-    index = build_faiss_index(embeddings)
-    save_index(index, all_chunks, index_dir, model_name, chunk_size, overlap)
-
-    return {
-        "status": "ok",
-        "mode": "full_rebuild",
-        "papers_processed": len(papers),
-        "total_chunks": len(all_chunks),
-        "embedding_dim": int(embeddings.shape[1]),
-        "index_path": index_dir,
-    }
+    emb = embed_chunks(all_chunks, model_name)
+    fi = build_faiss_index(emb)
+    bi = build_bm25_index(all_chunks)
+    save_index(fi, bi, all_chunks, index_dir, model_name, chunk_size, overlap)
+    return {"status": "ok", "mode": "full_rebuild",
+            "papers": len(papers), "chunks": len(all_chunks), "dim": int(emb.shape[1])}
 
 
-# ═══════════════════════════════════════════════════════════════════════════
-# 5.  INCREMENTAL UPDATE + RESUME
-# ═══════════════════════════════════════════════════════════════════════════
-
-def update_index(library_dir: str = LIBRARY_DIR,
-                 index_dir: str = INDEX_DIR,
-                 chunk_size: int = CHUNK_SIZE,
-                 overlap: int = CHUNK_OVERLAP,
-                 model_name: str = EMBED_MODEL_NAME,
-                 force_rebuild: bool = False) -> dict:
-    """
-    Smart build: only processes papers not already in the index.
-    Also serves as a resume if a previous build was interrupted.
-
-    Automatically triggers a full rebuild if the embedding model or
-    chunk parameters have changed (or if force_rebuild=True).
-    """
-    # Check if params changed — if so, full rebuild
-    if force_rebuild or _needs_full_rebuild(index_dir, model_name, chunk_size, overlap):
-        log.info("🔄 Running full rebuild…")
+def update_index(library_dir=LIBRARY_DIR, index_dir=INDEX_DIR,
+                 chunk_size=CHUNK_SIZE, overlap=CHUNK_OVERLAP,
+                 model_name=EMBED_MODEL_NAME, force_rebuild=False) -> dict:
+    if force_rebuild or _needs_rebuild(index_dir, model_name, chunk_size, overlap):
         return build_full_index(library_dir, index_dir, chunk_size, overlap, model_name)
-
-    # Load existing index + metadata, or start fresh
     try:
-        index, existing_meta = load_index(index_dir)
-        already_indexed = {m["paper_filepath"] for m in existing_meta}
-        log.info(f"📂 Existing index has {len(existing_meta)} chunks "
-                 f"from {len(already_indexed)} papers")
+        _, _, existing = load_index(index_dir)
+        already = {m["paper_filepath"] for m in existing}
     except FileNotFoundError:
-        index = None
-        existing_meta = []
-        already_indexed = set()
-        log.info("No existing index — starting fresh")
-
-    # Extract ALL papers from library
+        existing, already = [], set()
     all_papers = extract_all_papers(library_dir)
-    new_papers = [p for p in all_papers if p["meta"].filepath not in already_indexed]
-
-    if not new_papers:
-        return {
-            "status": "ok",
-            "mode": "no_update_needed",
-            "message": "All papers already indexed",
-            "total_papers": len(all_papers),
-            "total_chunks": len(existing_meta),
-        }
-
-    log.info(f"🆕 {len(new_papers)} new papers to process "
-             f"(skipping {len(all_papers) - len(new_papers)} already indexed)")
-
-    # Chunk + embed only the new papers
-    new_chunks: list[Chunk] = []
-    for p in new_papers:
-        new_chunks.extend(chunk_paper(p, chunk_size, overlap))
-    log.info(f"🔪 {len(new_chunks)} new chunks from {len(new_papers)} papers")
-
-    new_embeddings = embed_chunks(new_chunks, model_name)
-
-    # Build or extend the FAISS index
-    if index is None:
-        index = build_faiss_index(new_embeddings)
-    else:
-        index.add(new_embeddings)
-        log.info(f"➕ Added {new_embeddings.shape[0]} vectors — "
-                 f"index now has {index.ntotal} total")
-
-    # Merge metadata: existing + new
-    all_chunks_for_save: list[Chunk] = []
-
-    for m in existing_meta:
-        all_chunks_for_save.append(Chunk(
-            text=m["text"],
-            chunk_index=m["chunk_index"],
-            start_char=m["start_char"],
-            end_char=m["end_char"],
-            paper=PaperMeta(
-                title=m["paper_title"],
-                category=m["paper_category"],
-                filename=m["paper_filename"],
-                filepath=m["paper_filepath"],
-            ),
-        ))
-    all_chunks_for_save.extend(new_chunks)
-
-    save_index(index, all_chunks_for_save, index_dir, model_name, chunk_size, overlap)
-
-    return {
-        "status": "ok",
-        "mode": "incremental_update",
-        "new_papers": len(new_papers),
-        "new_chunks": len(new_chunks),
-        "total_papers": len(already_indexed) + len(new_papers),
-        "total_chunks": index.ntotal,
-        "embedding_dim": index.d,
-    }
+    new = [p for p in all_papers if p["meta"].filepath not in already]
+    if not new:
+        return {"status": "ok", "mode": "no_update", "papers": len(all_papers), "chunks": len(existing)}
+    return build_full_index(library_dir, index_dir, chunk_size, overlap, model_name)
 
 
-# ═══════════════════════════════════════════════════════════════════════════
-# 6.  DELETE PAPERS FROM INDEX
-# ═══════════════════════════════════════════════════════════════════════════
-
-def remove_papers(filepaths: list[str],
-                  index_dir: str = INDEX_DIR,
-                  model_name: str = EMBED_MODEL_NAME,
-                  chunk_size: int = CHUNK_SIZE,
-                  overlap: int = CHUNK_OVERLAP) -> dict:
-    """
-    Remove specific papers from the index by filepath.
-    Since FAISS IndexFlatIP doesn't support selective deletion natively,
-    we rebuild the index from the remaining chunks.
-    """
+def remove_papers(filepaths, index_dir=INDEX_DIR, model_name=EMBED_MODEL_NAME,
+                  chunk_size=CHUNK_SIZE, overlap=CHUNK_OVERLAP):
     try:
-        _, existing_meta = load_index(index_dir)
+        _, _, existing = load_index(index_dir)
     except FileNotFoundError:
-        return {"status": "error", "message": "No index exists"}
-
-    remove_set = set(filepaths)
-    keep_meta = [m for m in existing_meta if m["paper_filepath"] not in remove_set]
-    removed_count = len(existing_meta) - len(keep_meta)
-
-    if removed_count == 0:
-        return {"status": "ok", "message": "No matching papers found in index"}
-
-    keep_chunks = [
-        Chunk(
-            text=m["text"],
-            chunk_index=m["chunk_index"],
-            start_char=m["start_char"],
-            end_char=m["end_char"],
-            paper=PaperMeta(
-                title=m["paper_title"],
-                category=m["paper_category"],
-                filename=m["paper_filename"],
-                filepath=m["paper_filepath"],
-            ),
-        )
-        for m in keep_meta
-    ]
-
-    if keep_chunks:
-        embeddings = embed_chunks(keep_chunks, model_name)
-        index = build_faiss_index(embeddings)
-        save_index(index, keep_chunks, index_dir, model_name, chunk_size, overlap)
+        return {"status": "error", "message": "No index"}
+    rm = set(filepaths)
+    keep = [m for m in existing if m["paper_filepath"] not in rm]
+    removed = len(existing) - len(keep)
+    if not removed:
+        return {"status": "ok", "message": "Nothing to remove"}
+    if keep:
+        chunks = [_dict_to_chunk(m) for m in keep]
+        emb = embed_chunks(chunks, model_name)
+        fi = build_faiss_index(emb)
+        bi = build_bm25_index(chunks)
+        save_index(fi, bi, chunks, index_dir, model_name, chunk_size, overlap)
     else:
-        for fname in ("faiss.index", "chunks_meta.json", INDEX_CONFIG):
-            path = os.path.join(index_dir, fname)
-            if os.path.exists(path):
-                os.remove(path)
-
-    return {
-        "status": "ok",
-        "removed_chunks": removed_count,
-        "remaining_chunks": len(keep_meta),
-    }
-
-
-# ---------------------------------------------------------------------------
-# Quick CLI
-# ---------------------------------------------------------------------------
-if __name__ == "__main__":
-    import sys
-
-    usage = """
-Usage:
-  python embeddings.py build          Full rebuild from scratch
-  python embeddings.py update         Incremental update (only new papers)
-  python embeddings.py search <query> Semantic search
-  python embeddings.py status         Show index stats
-"""
-
-    if len(sys.argv) < 2:
-        print(usage)
-        sys.exit(1)
-
-    cmd = sys.argv[1]
-
-    if cmd == "build":
-        stats = build_full_index()
-        print(json.dumps(stats, indent=2))
-
-    elif cmd == "update":
-        stats = update_index()
-        print(json.dumps(stats, indent=2))
-
-    elif cmd == "search":
-        query = " ".join(sys.argv[2:]) or "portfolio optimization risk"
-        results = search(query, top_k=5)
-        for r in results:
-            print(f"\n[{r['rank']}] score={r['score']:.4f}  "
-                  f"({r['paper_category']}) {r['paper_title']}")
-            print(f"    {r['text'][:200]}…")
-
-    elif cmd == "status":
-        cfg = load_config()
-        if cfg:
-            print(json.dumps(cfg, indent=2))
-        else:
-            print("No index built yet.")
-
-    else:
-        print(usage)
+        for f in ("faiss.index", "bm25.pkl", "chunks_meta.json", INDEX_CONFIG):
+            p = os.path.join(index_dir, f)
+            if os.path.exists(p): os.remove(p)
+    return {"status": "ok", "removed": removed, "remaining": len(keep)}

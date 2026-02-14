@@ -23,10 +23,14 @@ dependencies = [
     "pydantic (>=2.12.5,<3.0.0)",
     "langchain-google-genai (>=4.2.0,<5.0.0)",
     "fastapi[standard] (>=0.128.0,<0.129.0)",
-    "uvicorn (>=0.40.0,<0.41.0)",
+    "uvicorn[standard] (>=0.40.0,<0.41.0)",
     "google (>=3.0.0,<4.0.0)",
     "unstructured-client (>=0.30.6)",
-    "faiss-cpu (>=1.13.2,<2.0.0) ; python_version >= \"3.10\" and python_version < \"3.15\""
+    "faiss-cpu (>=1.13.2,<2.0.0) ; python_version >= \"3.10\" and python_version < \"3.15\"",
+    "rank-bm25 (>=0.2.2,<0.3.0)",
+    "python-dotenv (>=1.2.1,<2.0.0)",
+    "openai (>=1.65.2,<2.0.0)",
+    "groq (>=1.0.0,<2.0.0)"
 ]
 
 [tool.poetry.dependencies]
