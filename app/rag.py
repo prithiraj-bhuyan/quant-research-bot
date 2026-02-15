@@ -200,6 +200,28 @@ def _build_fallback_answer(query: str, citations: list[Citation]) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Logging
+# ---------------------------------------------------------------------------
+def log_interaction(query: str, response: RAGResponse,
+                    logfile: str = "rag_logs.jsonl") -> None:
+    """Append the interaction to a JSONL log file."""
+    entry = {
+        "timestamp": time.time(),
+        "query": query,
+        "answer": response.answer,
+        "model_used": response.model_used,
+        "retrieval_ms": response.retrieval_time_ms,
+        "generation_ms": response.generation_time_ms,
+        "citations": [asdict(c) for c in response.citations]
+    }
+    try:
+        with open(logfile, "a") as f:
+            f.write(json.dumps(entry) + "\n")
+    except Exception as e:
+        log.error(f"Failed to write log: {e}")
+
+
+# ---------------------------------------------------------------------------
 # Main RAG pipeline
 # ---------------------------------------------------------------------------
 
@@ -270,7 +292,7 @@ Answer with [N] citations."""
     if llm_answer is None:
         llm_answer = _build_fallback_answer(query, citations)
 
-    return RAGResponse(
+    response = RAGResponse(
         answer=llm_answer,
         citations=citations,
         query=query,
@@ -280,6 +302,11 @@ Answer with [N] citations."""
         context_chunks_used=len(top_chunks),
         model_used=LLM_MODEL,
     )
+    
+    # Log the interaction
+    log_interaction(query, response)
+    
+    return response
 
 
 # ---------------------------------------------------------------------------

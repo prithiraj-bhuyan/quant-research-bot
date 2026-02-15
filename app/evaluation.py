@@ -35,35 +35,31 @@ log = logging.getLogger(__name__)
 # Test queries — 20 queries spanning different quant finance topics
 # ---------------------------------------------------------------------------
 DEFAULT_EVAL_QUERIES = [
-    # Portfolio & Optimization
+    # --- 10 DIRECT QUERIES (Fact Retrieval) ---
     "How is mean-variance optimization applied in portfolio construction?",
     "What are the limitations of the Markowitz framework?",
-    "How do transaction costs affect optimal portfolio rebalancing?",
-    "What methods are used for portfolio risk budgeting?",
-
-    # Risk Management
     "How is Value at Risk (VaR) calculated using historical simulation?",
     "What are the differences between parametric and non-parametric risk measures?",
-    "How do extreme value theory methods apply to financial risk?",
-    "What role does correlation play in portfolio risk management?",
-
-    # Market Microstructure & Trading
     "What is the impact of high-frequency trading on market liquidity?",
     "How are limit order books modeled in market microstructure theory?",
-    "What execution algorithms minimize market impact?",
-    "How is the bid-ask spread determined in electronic markets?",
-
-    # Pricing & Derivatives
     "How does the Black-Scholes model price European options?",
     "What are the assumptions behind risk-neutral pricing?",
-    "How are stochastic volatility models calibrated to market data?",
-    "What numerical methods are used for pricing exotic derivatives?",
-
-    # Statistical & ML Methods
     "How are GARCH models used for volatility forecasting?",
     "What machine learning approaches are applied to stock return prediction?",
-    "How is factor analysis used in asset pricing?",
-    "What are the challenges of applying deep learning to financial time series?",
+
+    # --- 5 SYNTHESIS QUERIES (Comparing/Combining INFO) ---
+    "Compare the advantages of deep learning vs statistical methods for time series forecasting.",
+    "How do transaction costs and market impact jointly affect optimal execution strategies?",
+    "What is the relationship between market liquidity and volatility in high-frequency markets?",
+    "Discuss the trade-offs between automated market making and traditional inventory management.",
+    "How does regime-switching improve upon static factor allocation models?",
+
+    # --- 5 EDGE CASES (Ambiguity / Missing Info) ---
+    "Does the corpus contain evidence for the 'Halloween Effect' in crypto markets?",
+    "What specific code implementation details are provided for the DeepHedging algorithm?",
+    "Does the text mention the impact of quantum computing on high-frequency trading latency?",
+    "What are the exact interest rate parameters used in the 2008 crisis simulations?",
+    "Does the corpus validate the efficieny of astrology-based trading strategies?"
 ]
 
 
@@ -86,6 +82,8 @@ class EvalResult:
     generation_time_ms: float
     num_chunks: int
     num_citations: int
+    generated_answer: Optional[str] = None
+    retrieved_chunks: Optional[list[dict]] = None
 
 
 def evaluate_single_embedding(query: str,
@@ -143,6 +141,8 @@ def evaluate_single_embedding(query: str,
         generation_time_ms=response.generation_time_ms,
         num_chunks=response.context_chunks_used,
         num_citations=len(response.citations),
+        generated_answer=response.answer,
+        retrieved_chunks=[asdict(c) for c in response.citations]
     )
 
 
@@ -210,6 +210,8 @@ Score 0.0 (hallucinated) to 1.0 (fully grounded):"""
         generation_time_ms=response.generation_time_ms,
         num_chunks=response.context_chunks_used,
         num_citations=len(response.citations),
+        generated_answer=response.answer,
+        retrieved_chunks=[asdict(c) for c in response.citations]
     )
 
 
@@ -260,6 +262,7 @@ def run_evaluation(queries: Optional[list[str]] = None,
                 query=q, context_precision=0, answer_relevancy=0,
                 faithfulness=0, retrieval_time_ms=0, rerank_time_ms=0,
                 generation_time_ms=0, num_chunks=0, num_citations=0,
+                generated_answer="Error during evaluation", retrieved_chunks=[]
             ))
 
     # Aggregate

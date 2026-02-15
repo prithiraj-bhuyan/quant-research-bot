@@ -3,5 +3,5 @@
   "chunk_size": 500,
   "overlap": 80,
   "embedding_dim": 384,
-  "total_vectors": 1133
+  "total_vectors": 3063
 }

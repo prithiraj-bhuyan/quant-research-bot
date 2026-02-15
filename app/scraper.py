@@ -7,7 +7,7 @@ import os
 import re
 import requests
 
-LIBRARY_DIR = os.path.join(os.path.dirname(__file__), "..", "quant_library")
+LIBRARY_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "raw")
 
 def get_paper_links(max_papers: int):
     client = arxiv.Client()

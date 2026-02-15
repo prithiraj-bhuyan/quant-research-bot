@@ -1,0 +1,722 @@
+[
+  {
+    "filename": "Empirical_properties_of_the_variety_of_a_financial.pdf",
+    "category": "cond-mat.stat-mech",
+    "title": "Empirical properties of the variety of a financial",
+    "filepath": "data/raw/cond-mat.stat-mech/Empirical_properties_of_the_variety_of_a_financial.pdf"
+  },
+  {
+    "filename": "Stock_Market_Speculation_Spontaneous_Symmetry_Brea.pdf",
+    "category": "cond-mat.stat-mech",
+    "title": "Stock Market Speculation Spontaneous Symmetry Brea",
+    "filepath": "data/raw/cond-mat.stat-mech/Stock_Market_Speculation_Spontaneous_Symmetry_Brea.pdf"
+  },
+  {
+    "filename": "Instruct-FinGPT_Financial_Sentiment_Analysis_by_In.pdf",
+    "category": "cs.CL",
+    "title": "Instruct-FinGPT Financial Sentiment Analysis by In",
+    "filepath": "data/raw/cs.CL/Instruct-FinGPT_Financial_Sentiment_Analysis_by_In.pdf"
+  },
+  {
+    "filename": "Pragmatic_Information_Rates_Generalizations_of_the.pdf",
+    "category": "cs.IT",
+    "title": "Pragmatic Information Rates Generalizations of the",
+    "filepath": "data/raw/cs.IT/Pragmatic_Information_Rates_Generalizations_of_the.pdf"
+  },
+  {
+    "filename": "Conformal_Prediction_Interval_Estimations_with_an_.pdf",
+    "category": "econ.EM",
+    "title": "Conformal Prediction Interval Estimations with an ",
+    "filepath": "data/raw/econ.EM/Conformal_Prediction_Interval_Estimations_with_an_.pdf"
+  },
+  {
+    "filename": "Market-Based_Actual_Returns_of_Investors.pdf",
+    "category": "econ.GN",
+    "title": "Market-Based Actual Returns of Investors",
+    "filepath": "data/raw/econ.GN/Market-Based_Actual_Returns_of_Investors.pdf"
+  },
+  {
+    "filename": "A_Joint_Energy_and_Differentially-Private_Smart_Me.pdf",
+    "category": "eess.SY",
+    "title": "A Joint Energy and Differentially-Private Smart Me",
+    "filepath": "data/raw/eess.SY/A_Joint_Energy_and_Differentially-Private_Smart_Me.pdf"
+  },
+  {
+    "filename": "Anticipating_cryptocurrency_prices_using_machine_l.pdf",
+    "category": "physics.soc-ph",
+    "title": "Anticipating cryptocurrency prices using machine l",
+    "filepath": "data/raw/physics.soc-ph/Anticipating_cryptocurrency_prices_using_machine_l.pdf"
+  },
+  {
+    "filename": "How_many_independent_bets_are_there.pdf",
+    "category": "physics.soc-ph",
+    "title": "How many independent bets are there",
+    "filepath": "data/raw/physics.soc-ph/How_many_independent_bets_are_there.pdf"
+  },
+  {
+    "filename": "Revisiting_the_Epps_effect_using_volume_time_avera.pdf",
+    "category": "q-fin.CP",
+    "title": "Revisiting the Epps effect using volume time avera",
+    "filepath": "data/raw/q-fin.CP/Revisiting_the_Epps_effect_using_volume_time_avera.pdf"
+  },
+  {
+    "filename": "Evidence_of_market_manipulation_in_the_financial_c.pdf",
+    "category": "q-fin.GN",
+    "title": "Evidence of market manipulation in the financial c",
+    "filepath": "data/raw/q-fin.GN/Evidence_of_market_manipulation_in_the_financial_c.pdf"
+  },
+  {
+    "filename": "Automated_Market_Making_and_Arbitrage_Profits_in_t.pdf",
+    "category": "q-fin.MF",
+    "title": "Automated Market Making and Arbitrage Profits in t",
+    "filepath": "data/raw/q-fin.MF/Automated_Market_Making_and_Arbitrage_Profits_in_t.pdf"
+  },
+  {
+    "filename": "Automated_Market_Making_and_Loss-Versus-Rebalancin.pdf",
+    "category": "q-fin.MF",
+    "title": "Automated Market Making and Loss-Versus-Rebalancin",
+    "filepath": "data/raw/q-fin.MF/Automated_Market_Making_and_Loss-Versus-Rebalancin.pdf"
+  },
+  {
+    "filename": "Forecasting_with_fractional_Brownian_motion_a_fina.pdf",
+    "category": "q-fin.MF",
+    "title": "Forecasting with fractional Brownian motion a fina",
+    "filepath": "data/raw/q-fin.MF/Forecasting_with_fractional_Brownian_motion_a_fina.pdf"
+  },
+  {
+    "filename": "Generalized_statistical_arbitrage_concepts_and_rel.pdf",
+    "category": "q-fin.MF",
+    "title": "Generalized statistical arbitrage concepts and rel",
+    "filepath": "data/raw/q-fin.MF/Generalized_statistical_arbitrage_concepts_and_rel.pdf"
+  },
+  {
+    "filename": "A_Comparative_Anatomy_of_REITs_and_Residential_Rea.pdf",
+    "category": "q-fin.PM",
+    "title": "A Comparative Anatomy of REITs and Residential Rea",
+    "filepath": "data/raw/q-fin.PM/A_Comparative_Anatomy_of_REITs_and_Residential_Rea.pdf"
+  },
+  {
+    "filename": "A_Comparision_of_Three_Network_Portfolio_Selection.pdf",
+    "category": "q-fin.PM",
+    "title": "A Comparision of Three Network Portfolio Selection",
+    "filepath": "data/raw/q-fin.PM/A_Comparision_of_Three_Network_Portfolio_Selection.pdf"
+  },
+  {
+    "filename": "A_Multi-factor_Adaptive_Statistical_Arbitrage_Mode.pdf",
+    "category": "q-fin.PM",
+    "title": "A Multi-factor Adaptive Statistical Arbitrage Mode",
+    "filepath": "data/raw/q-fin.PM/A_Multi-factor_Adaptive_Statistical_Arbitrage_Mode.pdf"
+  },
+  {
+    "filename": "Analysing_Global_Fixed_Income_Markets_with_Tensors.pdf",
+    "category": "q-fin.PM",
+    "title": "Analysing Global Fixed Income Markets with Tensors",
+    "filepath": "data/raw/q-fin.PM/Analysing_Global_Fixed_Income_Markets_with_Tensors.pdf"
+  },
+  {
+    "filename": "Can_Google_Trends_search_queries_contribute_to_ris.pdf",
+    "category": "q-fin.PM",
+    "title": "Can Google Trends search queries contribute to ris",
+    "filepath": "data/raw/q-fin.PM/Can_Google_Trends_search_queries_contribute_to_ris.pdf"
+  },
+  {
+    "filename": "Correlation_without_Factors_in_Retail_Cryptocurren.pdf",
+    "category": "q-fin.PM",
+    "title": "Correlation without Factors in Retail Cryptocurren",
+    "filepath": "data/raw/q-fin.PM/Correlation_without_Factors_in_Retail_Cryptocurren.pdf"
+  },
+  {
+    "filename": "Downside_Risk_Reduction_Using_Regime-Switching_Sig.pdf",
+    "category": "q-fin.PM",
+    "title": "Downside Risk Reduction Using Regime-Switching Sig",
+    "filepath": "data/raw/q-fin.PM/Downside_Risk_Reduction_Using_Regime-Switching_Sig.pdf"
+  },
+  {
+    "filename": "Dynamic_Factor_Allocation_Leveraging_Regime-Switch.pdf",
+    "category": "q-fin.PM",
+    "title": "Dynamic Factor Allocation Leveraging Regime-Switch",
+    "filepath": "data/raw/q-fin.PM/Dynamic_Factor_Allocation_Leveraging_Regime-Switch.pdf"
+  },
+  {
+    "filename": "Fast_Times_Slow_Times_Timescale_Separation_in_Fina.pdf",
+    "category": "q-fin.PM",
+    "title": "Fast Times Slow Times Timescale Separation in Fina",
+    "filepath": "data/raw/q-fin.PM/Fast_Times_Slow_Times_Timescale_Separation_in_Fina.pdf"
+  },
+  {
+    "filename": "Machine_Learning_Portfolio_Allocation.pdf",
+    "category": "q-fin.PM",
+    "title": "Machine Learning Portfolio Allocation",
+    "filepath": "data/raw/q-fin.PM/Machine_Learning_Portfolio_Allocation.pdf"
+  },
+  {
+    "filename": "Mean-Reverting_Portfolio_Design_with_Budget_Constr.pdf",
+    "category": "q-fin.PM",
+    "title": "Mean-Reverting Portfolio Design with Budget Constr",
+    "filepath": "data/raw/q-fin.PM/Mean-Reverting_Portfolio_Design_with_Budget_Constr.pdf"
+  },
+  {
+    "filename": "Minimizing_the_expected_market_time_to_reach_a_cer.pdf",
+    "category": "q-fin.PM",
+    "title": "Minimizing the expected market time to reach a cer",
+    "filepath": "data/raw/q-fin.PM/Minimizing_the_expected_market_time_to_reach_a_cer.pdf"
+  },
+  {
+    "filename": "Non-linear_shrinkage_of_the_price_return_covarianc.pdf",
+    "category": "q-fin.PM",
+    "title": "Non-linear shrinkage of the price return covarianc",
+    "filepath": "data/raw/q-fin.PM/Non-linear_shrinkage_of_the_price_return_covarianc.pdf"
+  },
+  {
+    "filename": "Optimal_Dynamic_Strategies_on_Gaussian_Returns.pdf",
+    "category": "q-fin.PM",
+    "title": "Optimal Dynamic Strategies on Gaussian Returns",
+    "filepath": "data/raw/q-fin.PM/Optimal_Dynamic_Strategies_on_Gaussian_Returns.pdf"
+  },
+  {
+    "filename": "Optimal_growth_trajectories_with_finite_carrying_c.pdf",
+    "category": "q-fin.PM",
+    "title": "Optimal growth trajectories with finite carrying c",
+    "filepath": "data/raw/q-fin.PM/Optimal_growth_trajectories_with_finite_carrying_c.pdf"
+  },
+  {
+    "filename": "Performance_analysis_of_the_optimal_strategy_under.pdf",
+    "category": "q-fin.PM",
+    "title": "Performance analysis of the optimal strategy under",
+    "filepath": "data/raw/q-fin.PM/Performance_analysis_of_the_optimal_strategy_under.pdf"
+  },
+  {
+    "filename": "Portfolio_Optimization.pdf",
+    "category": "q-fin.PM",
+    "title": "Portfolio Optimization",
+    "filepath": "data/raw/q-fin.PM/Portfolio_Optimization.pdf"
+  },
+  {
+    "filename": "Relative_utility_bounds_for_empirically_optimal_po.pdf",
+    "category": "q-fin.PM",
+    "title": "Relative utility bounds for empirically optimal po",
+    "filepath": "data/raw/q-fin.PM/Relative_utility_bounds_for_empirically_optimal_po.pdf"
+  },
+  {
+    "filename": "Sparse_Portfolio_Selection_via_Topological_Data_An.pdf",
+    "category": "q-fin.PM",
+    "title": "Sparse Portfolio Selection via Topological Data An",
+    "filepath": "data/raw/q-fin.PM/Sparse_Portfolio_Selection_via_Topological_Data_An.pdf"
+  },
+  {
+    "filename": "Statistical_Industry_Classification.pdf",
+    "category": "q-fin.PM",
+    "title": "Statistical Industry Classification",
+    "filepath": "data/raw/q-fin.PM/Statistical_Industry_Classification.pdf"
+  },
+  {
+    "filename": "The_Effects_of_Market_Properties_on_Portfolio_Dive.pdf",
+    "category": "q-fin.PM",
+    "title": "The Effects of Market Properties on Portfolio Dive",
+    "filepath": "data/raw/q-fin.PM/The_Effects_of_Market_Properties_on_Portfolio_Dive.pdf"
+  },
+  {
+    "filename": "The_Limits_of_Leverage.pdf",
+    "category": "q-fin.PM",
+    "title": "The Limits of Leverage",
+    "filepath": "data/raw/q-fin.PM/The_Limits_of_Leverage.pdf"
+  },
+  {
+    "filename": "TradingGPT_Multi-Agent_System_with_Layered_Memory_.pdf",
+    "category": "q-fin.PM",
+    "title": "TradingGPT Multi-Agent System with Layered Memory ",
+    "filepath": "data/raw/q-fin.PM/TradingGPT_Multi-Agent_System_with_Layered_Memory_.pdf"
+  },
+  {
+    "filename": "Why_Indexing_Works.pdf",
+    "category": "q-fin.PM",
+    "title": "Why Indexing Works",
+    "filepath": "data/raw/q-fin.PM/Why_Indexing_Works.pdf"
+  },
+  {
+    "filename": "Impact_of_Cross-Listing_Chinese_Stock_Returns_A_an.pdf",
+    "category": "q-fin.PR",
+    "title": "Impact of Cross-Listing Chinese Stock Returns A an",
+    "filepath": "data/raw/q-fin.PR/Impact_of_Cross-Listing_Chinese_Stock_Returns_A_an.pdf"
+  },
+  {
+    "filename": "Fair_Estimation_of_Capital_Risk_Allocation.pdf",
+    "category": "q-fin.RM",
+    "title": "Fair Estimation of Capital Risk Allocation",
+    "filepath": "data/raw/q-fin.RM/Fair_Estimation_of_Capital_Risk_Allocation.pdf"
+  },
+  {
+    "filename": "Liquidity_Stress_Testing_in_Asset_Management_--_Pa.pdf",
+    "category": "q-fin.RM",
+    "title": "Liquidity Stress Testing in Asset Management -- Pa",
+    "filepath": "data/raw/q-fin.RM/Liquidity_Stress_Testing_in_Asset_Management_--_Pa.pdf"
+  },
+  {
+    "filename": "The_StressVaR_A_New_Risk_Concept_for_Superior_Fund.pdf",
+    "category": "q-fin.RM",
+    "title": "The StressVaR A New Risk Concept for Superior Fund",
+    "filepath": "data/raw/q-fin.RM/The_StressVaR_A_New_Risk_Concept_for_Superior_Fund.pdf"
+  },
+  {
+    "filename": "A_Clustering_Algorithm_for_Correlation_Quickest_Hu.pdf",
+    "category": "q-fin.ST",
+    "title": "A Clustering Algorithm for Correlation Quickest Hu",
+    "filepath": "data/raw/q-fin.ST/A_Clustering_Algorithm_for_Correlation_Quickest_Hu.pdf"
+  },
+  {
+    "filename": "Analysis_of_Realized_Volatility_for_Nikkei_Stock_A.pdf",
+    "category": "q-fin.ST",
+    "title": "Analysis of Realized Volatility for Nikkei Stock A",
+    "filepath": "data/raw/q-fin.ST/Analysis_of_Realized_Volatility_for_Nikkei_Stock_A.pdf"
+  },
+  {
+    "filename": "Analyzing_order_flows_in_limit_order_books_with_ra.pdf",
+    "category": "q-fin.ST",
+    "title": "Analyzing order flows in limit order books with ra",
+    "filepath": "data/raw/q-fin.ST/Analyzing_order_flows_in_limit_order_books_with_ra.pdf"
+  },
+  {
+    "filename": "Are_benefits_from_oil_-_stocks_diversification_gon.pdf",
+    "category": "q-fin.ST",
+    "title": "Are benefits from oil - stocks diversification gon",
+    "filepath": "data/raw/q-fin.ST/Are_benefits_from_oil_-_stocks_diversification_gon.pdf"
+  },
+  {
+    "filename": "Assessing_market_uncertainty_by_means_of_a_time-va.pdf",
+    "category": "q-fin.ST",
+    "title": "Assessing market uncertainty by means of a time-va",
+    "filepath": "data/raw/q-fin.ST/Assessing_market_uncertainty_by_means_of_a_time-va.pdf"
+  },
+  {
+    "filename": "Biased_Risk_Parity_with_Fractal_Model_of_Risk.pdf",
+    "category": "q-fin.ST",
+    "title": "Biased Risk Parity with Fractal Model of Risk",
+    "filepath": "data/raw/q-fin.ST/Biased_Risk_Parity_with_Fractal_Model_of_Risk.pdf"
+  },
+  {
+    "filename": "Compensating_asynchrony_effects_in_the_calculation.pdf",
+    "category": "q-fin.ST",
+    "title": "Compensating asynchrony effects in the calculation",
+    "filepath": "data/raw/q-fin.ST/Compensating_asynchrony_effects_in_the_calculation.pdf"
+  },
+  {
+    "filename": "Cryptocurrency_market_structure_connecting_emotion.pdf",
+    "category": "q-fin.ST",
+    "title": "Cryptocurrency market structure connecting emotion",
+    "filepath": "data/raw/q-fin.ST/Cryptocurrency_market_structure_connecting_emotion.pdf"
+  },
+  {
+    "filename": "Determinants_of_immediate_price_impacts_at_the_tra.pdf",
+    "category": "q-fin.ST",
+    "title": "Determinants of immediate price impacts at the tra",
+    "filepath": "data/raw/q-fin.ST/Determinants_of_immediate_price_impacts_at_the_tra.pdf"
+  },
+  {
+    "filename": "Dual-CLVSA_a_Novel_Deep_Learning_Approach_to_Predi.pdf",
+    "category": "q-fin.ST",
+    "title": "Dual-CLVSA a Novel Deep Learning Approach to Predi",
+    "filepath": "data/raw/q-fin.ST/Dual-CLVSA_a_Novel_Deep_Learning_Approach_to_Predi.pdf"
+  },
+  {
+    "filename": "Forecasting_dynamic_return_distributions_based_on_.pdf",
+    "category": "q-fin.ST",
+    "title": "Forecasting dynamic return distributions based on ",
+    "filepath": "data/raw/q-fin.ST/Forecasting_dynamic_return_distributions_based_on_.pdf"
+  },
+  {
+    "filename": "From_quadratic_Hawkes_processes_to_super-Heston_ro.pdf",
+    "category": "q-fin.ST",
+    "title": "From quadratic Hawkes processes to super-Heston ro",
+    "filepath": "data/raw/q-fin.ST/From_quadratic_Hawkes_processes_to_super-Heston_ro.pdf"
+  },
+  {
+    "filename": "Great_year_bad_Sharpe_A_note_on_the_joint_distribu.pdf",
+    "category": "q-fin.ST",
+    "title": "Great year bad Sharpe A note on the joint distribu",
+    "filepath": "data/raw/q-fin.ST/Great_year_bad_Sharpe_A_note_on_the_joint_distribu.pdf"
+  },
+  {
+    "filename": "Immediate_price_impact_of_a_stock_and_its_warrant_.pdf",
+    "category": "q-fin.ST",
+    "title": "Immediate price impact of a stock and its warrant ",
+    "filepath": "data/raw/q-fin.ST/Immediate_price_impact_of_a_stock_and_its_warrant_.pdf"
+  },
+  {
+    "filename": "Inference_on_multivariate_ARCH_processes_with_larg.pdf",
+    "category": "q-fin.ST",
+    "title": "Inference on multivariate ARCH processes with larg",
+    "filepath": "data/raw/q-fin.ST/Inference_on_multivariate_ARCH_processes_with_larg.pdf"
+  },
+  {
+    "filename": "Intra-day_variability_of_the_stock_market_activity.pdf",
+    "category": "q-fin.ST",
+    "title": "Intra-day variability of the stock market activity",
+    "filepath": "data/raw/q-fin.ST/Intra-day_variability_of_the_stock_market_activity.pdf"
+  },
+  {
+    "filename": "Optimal_bidding_in_hourly_and_quarter-hourly_elect.pdf",
+    "category": "q-fin.ST",
+    "title": "Optimal bidding in hourly and quarter-hourly elect",
+    "filepath": "data/raw/q-fin.ST/Optimal_bidding_in_hourly_and_quarter-hourly_elect.pdf"
+  },
+  {
+    "filename": "Optimal_shrinkage-based_portfolio_selection_in_hig.pdf",
+    "category": "q-fin.ST",
+    "title": "Optimal shrinkage-based portfolio selection in hig",
+    "filepath": "data/raw/q-fin.ST/Optimal_shrinkage-based_portfolio_selection_in_hig.pdf"
+  },
+  {
+    "filename": "PreBit_--_A_multimodal_model_with_Twitter_FinBERT_.pdf",
+    "category": "q-fin.ST",
+    "title": "PreBit -- A multimodal model with Twitter FinBERT ",
+    "filepath": "data/raw/q-fin.ST/PreBit_--_A_multimodal_model_with_Twitter_FinBERT_.pdf"
+  },
+  {
+    "filename": "Price_response_in_correlated_financial_markets_emp.pdf",
+    "category": "q-fin.ST",
+    "title": "Price response in correlated financial markets emp",
+    "filepath": "data/raw/q-fin.ST/Price_response_in_correlated_financial_markets_emp.pdf"
+  },
+  {
+    "filename": "Principal_Component_Analysis_and_Hidden_Markov_Mod.pdf",
+    "category": "q-fin.ST",
+    "title": "Principal Component Analysis and Hidden Markov Mod",
+    "filepath": "data/raw/q-fin.ST/Principal_Component_Analysis_and_Hidden_Markov_Mod.pdf"
+  },
+  {
+    "filename": "Recurrent_neural_network_based_parameter_estimatio.pdf",
+    "category": "q-fin.ST",
+    "title": "Recurrent neural network based parameter estimatio",
+    "filepath": "data/raw/q-fin.ST/Recurrent_neural_network_based_parameter_estimatio.pdf"
+  },
+  {
+    "filename": "Reinvestigating_the_Uncovered_Interest_Rate_Parity.pdf",
+    "category": "q-fin.ST",
+    "title": "Reinvestigating the Uncovered Interest Rate Parity",
+    "filepath": "data/raw/q-fin.ST/Reinvestigating_the_Uncovered_Interest_Rate_Parity.pdf"
+  },
+  {
+    "filename": "Scaling_stability_and_distribution_of_the_high-fre.pdf",
+    "category": "q-fin.ST",
+    "title": "Scaling stability and distribution of the high-fre",
+    "filepath": "data/raw/q-fin.ST/Scaling_stability_and_distribution_of_the_high-fre.pdf"
+  },
+  {
+    "filename": "Stochastic_leverage_effect_in_high-frequency_data_.pdf",
+    "category": "q-fin.ST",
+    "title": "Stochastic leverage effect in high-frequency data ",
+    "filepath": "data/raw/q-fin.ST/Stochastic_leverage_effect_in_high-frequency_data_.pdf"
+  },
+  {
+    "filename": "Supervised_classification-based_stock_prediction_a.pdf",
+    "category": "q-fin.ST",
+    "title": "Supervised classification-based stock prediction a",
+    "filepath": "data/raw/q-fin.ST/Supervised_classification-based_stock_prediction_a.pdf"
+  },
+  {
+    "filename": "The_leverage_effect_and_other_stylized_facts_displ.pdf",
+    "category": "q-fin.ST",
+    "title": "The leverage effect and other stylized facts displ",
+    "filepath": "data/raw/q-fin.ST/The_leverage_effect_and_other_stylized_facts_displ.pdf"
+  },
+  {
+    "filename": "Trends_Reversion_and_Critical_Phenomena_in_Financi.pdf",
+    "category": "q-fin.ST",
+    "title": "Trends Reversion and Critical Phenomena in Financi",
+    "filepath": "data/raw/q-fin.ST/Trends_Reversion_and_Critical_Phenomena_in_Financi.pdf"
+  },
+  {
+    "filename": "Volatility_Depends_on_Market_Trades_and_Macro_Theo.pdf",
+    "category": "q-fin.ST",
+    "title": "Volatility Depends on Market Trades and Macro Theo",
+    "filepath": "data/raw/q-fin.ST/Volatility_Depends_on_Market_Trades_and_Macro_Theo.pdf"
+  },
+  {
+    "filename": "Wax_and_wane_of_the_cross-sectional_momentum_and_c.pdf",
+    "category": "q-fin.ST",
+    "title": "Wax and wane of the cross-sectional momentum and c",
+    "filepath": "data/raw/q-fin.ST/Wax_and_wane_of_the_cross-sectional_momentum_and_c.pdf"
+  },
+  {
+    "filename": "A_Multi_Agent_Model_for_the_Limit_Order_Book_Dynam.pdf",
+    "category": "q-fin.TR",
+    "title": "A Multi Agent Model for the Limit Order Book Dynam",
+    "filepath": "data/raw/q-fin.TR/A_Multi_Agent_Model_for_the_Limit_Order_Book_Dynam.pdf"
+  },
+  {
+    "filename": "A_characterisation_of_cross-impact_kernels.pdf",
+    "category": "q-fin.TR",
+    "title": "A characterisation of cross-impact kernels",
+    "filepath": "data/raw/q-fin.TR/A_characterisation_of_cross-impact_kernels.pdf"
+  },
+  {
+    "filename": "A_continuous_and_efficient_fundamental_price_on_th.pdf",
+    "category": "q-fin.TR",
+    "title": "A continuous and efficient fundamental price on th",
+    "filepath": "data/raw/q-fin.TR/A_continuous_and_efficient_fundamental_price_on_th.pdf"
+  },
+  {
+    "filename": "A_simple_microstructure_return_model_explaining_mi.pdf",
+    "category": "q-fin.TR",
+    "title": "A simple microstructure return model explaining mi",
+    "filepath": "data/raw/q-fin.TR/A_simple_microstructure_return_model_explaining_mi.pdf"
+  },
+  {
+    "filename": "AlphaStock_A_Buying-Winners-and-Selling-Losers_Inv.pdf",
+    "category": "q-fin.TR",
+    "title": "AlphaStock A Buying-Winners-and-Selling-Losers Inv",
+    "filepath": "data/raw/q-fin.TR/AlphaStock_A_Buying-Winners-and-Selling-Losers_Inv.pdf"
+  },
+  {
+    "filename": "An_agent-based_computational_model_for_Chinas_stoc.pdf",
+    "category": "q-fin.TR",
+    "title": "An agent-based computational model for Chinas stoc",
+    "filepath": "data/raw/q-fin.TR/An_agent-based_computational_model_for_Chinas_stoc.pdf"
+  },
+  {
+    "filename": "Asymmetric_statistics_of_order_books_The_role_of_d.pdf",
+    "category": "q-fin.TR",
+    "title": "Asymmetric statistics of order books The role of d",
+    "filepath": "data/raw/q-fin.TR/Asymmetric_statistics_of_order_books_The_role_of_d.pdf"
+  },
+  {
+    "filename": "Copula-Based_Trading_of_Cointegrated_Cryptocurrenc.pdf",
+    "category": "q-fin.TR",
+    "title": "Copula-Based Trading of Cointegrated Cryptocurrenc",
+    "filepath": "data/raw/q-fin.TR/Copula-Based_Trading_of_Cointegrated_Cryptocurrenc.pdf"
+  },
+  {
+    "filename": "Cross-Impact_of_Order_Flow_Imbalance_in_Equity_Mar.pdf",
+    "category": "q-fin.TR",
+    "title": "Cross-Impact of Order Flow Imbalance in Equity Mar",
+    "filepath": "data/raw/q-fin.TR/Cross-Impact_of_Order_Flow_Imbalance_in_Equity_Mar.pdf"
+  },
+  {
+    "filename": "Electricity_Price_Forecasting_using_Sale_and_Purch.pdf",
+    "category": "q-fin.TR",
+    "title": "Electricity Price Forecasting using Sale and Purch",
+    "filepath": "data/raw/q-fin.TR/Electricity_Price_Forecasting_using_Sale_and_Purch.pdf"
+  },
+  {
+    "filename": "Emergence_of_stylized_facts_during_the_opening_of_.pdf",
+    "category": "q-fin.TR",
+    "title": "Emergence of stylized facts during the opening of ",
+    "filepath": "data/raw/q-fin.TR/Emergence_of_stylized_facts_during_the_opening_of_.pdf"
+  },
+  {
+    "filename": "Executing_large_orders_in_a_microscopic_market_mod.pdf",
+    "category": "q-fin.TR",
+    "title": "Executing large orders in a microscopic market mod",
+    "filepath": "data/raw/q-fin.TR/Executing_large_orders_in_a_microscopic_market_mod.pdf"
+  },
+  {
+    "filename": "Forecast-to-Fill_Benchmark-Neutral_Alpha_and_Billi.pdf",
+    "category": "q-fin.TR",
+    "title": "Forecast-to-Fill Benchmark-Neutral Alpha and Billi",
+    "filepath": "data/raw/q-fin.TR/Forecast-to-Fill_Benchmark-Neutral_Alpha_and_Billi.pdf"
+  },
+  {
+    "filename": "From_Minority_Game_to_Black__Scholes_pricing.pdf",
+    "category": "q-fin.TR",
+    "title": "From Minority Game to Black  Scholes pricing",
+    "filepath": "data/raw/q-fin.TR/From_Minority_Game_to_Black__Scholes_pricing.pdf"
+  },
+  {
+    "filename": "Gaussian-Chain_Filters_for_Heavy-Tailed_Noise_with.pdf",
+    "category": "q-fin.TR",
+    "title": "Gaussian-Chain Filters for Heavy-Tailed Noise with",
+    "filepath": "data/raw/q-fin.TR/Gaussian-Chain_Filters_for_Heavy-Tailed_Noise_with.pdf"
+  },
+  {
+    "filename": "Heavy_tailed_distributions_in_closing_auctions.pdf",
+    "category": "q-fin.TR",
+    "title": "Heavy tailed distributions in closing auctions",
+    "filepath": "data/raw/q-fin.TR/Heavy_tailed_distributions_in_closing_auctions.pdf"
+  },
+  {
+    "filename": "High-Resilience_Limits_of_Block-Shaped_Order_Books.pdf",
+    "category": "q-fin.TR",
+    "title": "High-Resilience Limits of Block-Shaped Order Books",
+    "filepath": "data/raw/q-fin.TR/High-Resilience_Limits_of_Block-Shaped_Order_Books.pdf"
+  },
+  {
+    "filename": "Liquidity_in_Competitive_Dealer_Markets.pdf",
+    "category": "q-fin.TR",
+    "title": "Liquidity in Competitive Dealer Markets",
+    "filepath": "data/raw/q-fin.TR/Liquidity_in_Competitive_Dealer_Markets.pdf"
+  },
+  {
+    "filename": "Long-range_Auto-correlations_in_Limit_Order_Book_M.pdf",
+    "category": "q-fin.TR",
+    "title": "Long-range Auto-correlations in Limit Order Book M",
+    "filepath": "data/raw/q-fin.TR/Long-range_Auto-correlations_in_Limit_Order_Book_M.pdf"
+  },
+  {
+    "filename": "Marked_point_processes_and_intensity_ratios_for_li.pdf",
+    "category": "q-fin.TR",
+    "title": "Marked point processes and intensity ratios for li",
+    "filepath": "data/raw/q-fin.TR/Marked_point_processes_and_intensity_ratios_for_li.pdf"
+  },
+  {
+    "filename": "Market_Impact_A_Systematic_Study_of_the_High_Frequ.pdf",
+    "category": "q-fin.TR",
+    "title": "Market Impact A Systematic Study of the High Frequ",
+    "filepath": "data/raw/q-fin.TR/Market_Impact_A_Systematic_Study_of_the_High_Frequ.pdf"
+  },
+  {
+    "filename": "Modelling_bid-ask_spread_conditional_distributions.pdf",
+    "category": "q-fin.TR",
+    "title": "Modelling bid-ask spread conditional distributions",
+    "filepath": "data/raw/q-fin.TR/Modelling_bid-ask_spread_conditional_distributions.pdf"
+  },
+  {
+    "filename": "Optimal_Trading_with_General_Signals_and_Liquidati.pdf",
+    "category": "q-fin.TR",
+    "title": "Optimal Trading with General Signals and Liquidati",
+    "filepath": "data/raw/q-fin.TR/Optimal_Trading_with_General_Signals_and_Liquidati.pdf"
+  },
+  {
+    "filename": "Optimal_order_placement_in_limit_order_markets.pdf",
+    "category": "q-fin.TR",
+    "title": "Optimal order placement in limit order markets",
+    "filepath": "data/raw/q-fin.TR/Optimal_order_placement_in_limit_order_markets.pdf"
+  },
+  {
+    "filename": "Profitability_of_simple_technical_trading_rules_of.pdf",
+    "category": "q-fin.TR",
+    "title": "Profitability of simple technical trading rules of",
+    "filepath": "data/raw/q-fin.TR/Profitability_of_simple_technical_trading_rules_of.pdf"
+  },
+  {
+    "filename": "Quantifying_macroeconomic_expectations_in_stock_ma.pdf",
+    "category": "q-fin.TR",
+    "title": "Quantifying macroeconomic expectations in stock ma",
+    "filepath": "data/raw/q-fin.TR/Quantifying_macroeconomic_expectations_in_stock_ma.pdf"
+  },
+  {
+    "filename": "Singular_Perturbation_Expansion_for_Utility_Maximi.pdf",
+    "category": "q-fin.TR",
+    "title": "Singular Perturbation Expansion for Utility Maximi",
+    "filepath": "data/raw/q-fin.TR/Singular_Perturbation_Expansion_for_Utility_Maximi.pdf"
+  },
+  {
+    "filename": "Systemic_Risk_in_Market_Microstructure_of_Crude_Oi.pdf",
+    "category": "q-fin.TR",
+    "title": "Systemic Risk in Market Microstructure of Crude Oi",
+    "filepath": "data/raw/q-fin.TR/Systemic_Risk_in_Market_Microstructure_of_Crude_Oi.pdf"
+  },
+  {
+    "filename": "Testing_the_performance_of_technical_trading_rules.pdf",
+    "category": "q-fin.TR",
+    "title": "Testing the performance of technical trading rules",
+    "filepath": "data/raw/q-fin.TR/Testing_the_performance_of_technical_trading_rules.pdf"
+  },
+  {
+    "filename": "The_Hybrid_Forecast_of_SP_500_Volatility_ensembled.pdf",
+    "category": "q-fin.TR",
+    "title": "The Hybrid Forecast of SP 500 Volatility ensembled",
+    "filepath": "data/raw/q-fin.TR/The_Hybrid_Forecast_of_SP_500_Volatility_ensembled.pdf"
+  },
+  {
+    "filename": "The_Limit_Order_Book_Recreation_Model_LOBRM_An_Ext.pdf",
+    "category": "q-fin.TR",
+    "title": "The Limit Order Book Recreation Model LOBRM An Ext",
+    "filepath": "data/raw/q-fin.TR/The_Limit_Order_Book_Recreation_Model_LOBRM_An_Ext.pdf"
+  },
+  {
+    "filename": "The_nature_of_price_returns_during_periods_of_high.pdf",
+    "category": "q-fin.TR",
+    "title": "The nature of price returns during periods of high",
+    "filepath": "data/raw/q-fin.TR/The_nature_of_price_returns_during_periods_of_high.pdf"
+  },
+  {
+    "filename": "The_normaly_distributed_daily_returns_in_stock_tra.pdf",
+    "category": "q-fin.TR",
+    "title": "The normaly distributed daily returns in stock tra",
+    "filepath": "data/raw/q-fin.TR/The_normaly_distributed_daily_returns_in_stock_tra.pdf"
+  },
+  {
+    "filename": "The_order_book_as_a_queueing_system_average_depth_.pdf",
+    "category": "q-fin.TR",
+    "title": "The order book as a queueing system average depth ",
+    "filepath": "data/raw/q-fin.TR/The_order_book_as_a_queueing_system_average_depth_.pdf"
+  },
+  {
+    "filename": "The_price_impact_of_order_book_events_market_order.pdf",
+    "category": "q-fin.TR",
+    "title": "The price impact of order book events market order",
+    "filepath": "data/raw/q-fin.TR/The_price_impact_of_order_book_events_market_order.pdf"
+  },
+  {
+    "filename": "Trading_against_disorderly_liquidation_of_a_large_.pdf",
+    "category": "q-fin.TR",
+    "title": "Trading against disorderly liquidation of a large ",
+    "filepath": "data/raw/q-fin.TR/Trading_against_disorderly_liquidation_of_a_large_.pdf"
+  },
+  {
+    "filename": "Transformers_versus_LSTMs_for_electronic_trading.pdf",
+    "category": "q-fin.TR",
+    "title": "Transformers versus LSTMs for electronic trading",
+    "filepath": "data/raw/q-fin.TR/Transformers_versus_LSTMs_for_electronic_trading.pdf"
+  },
+  {
+    "filename": "Unlocking_Profit_Potential_Maximizing_Returns_with.pdf",
+    "category": "q-fin.TR",
+    "title": "Unlocking Profit Potential Maximizing Returns with",
+    "filepath": "data/raw/q-fin.TR/Unlocking_Profit_Potential_Maximizing_Returns_with.pdf"
+  },
+  {
+    "filename": "Using_Macroeconomic_Forecasts_to_Improve_Mean_Reve.pdf",
+    "category": "q-fin.TR",
+    "title": "Using Macroeconomic Forecasts to Improve Mean Reve",
+    "filepath": "data/raw/q-fin.TR/Using_Macroeconomic_Forecasts_to_Improve_Mean_Reve.pdf"
+  },
+  {
+    "filename": "Volatility_Harvesting_Extracting_Return_from_Rando.pdf",
+    "category": "q-fin.TR",
+    "title": "Volatility Harvesting Extracting Return from Rando",
+    "filepath": "data/raw/q-fin.TR/Volatility_Harvesting_Extracting_Return_from_Rando.pdf"
+  },
+  {
+    "filename": "Wealth_share_analysis_with_fundamentalistchartist_.pdf",
+    "category": "q-fin.TR",
+    "title": "Wealth share analysis with fundamentalistchartist ",
+    "filepath": "data/raw/q-fin.TR/Wealth_share_analysis_with_fundamentalistchartist_.pdf"
+  },
+  {
+    "filename": "Efficient_Modeling_and_Forecasting_of_the_Electric.pdf",
+    "category": "stat.AP",
+    "title": "Efficient Modeling and Forecasting of the Electric",
+    "filepath": "data/raw/stat.AP/Efficient_Modeling_and_Forecasting_of_the_Electric.pdf"
+  },
+  {
+    "filename": "Hawkes_processes_for_credit_indices_time_series_an.pdf",
+    "category": "stat.AP",
+    "title": "Hawkes processes for credit indices time series an",
+    "filepath": "data/raw/stat.AP/Hawkes_processes_for_credit_indices_time_series_an.pdf"
+  },
+  {
+    "filename": "The_Dirichlet_Portfolio_Model_Uncovering_the_Hidde.pdf",
+    "category": "stat.AP",
+    "title": "The Dirichlet Portfolio Model Uncovering the Hidde",
+    "filepath": "data/raw/stat.AP/The_Dirichlet_Portfolio_Model_Uncovering_the_Hidde.pdf"
+  },
+  {
+    "filename": "High-Dimensional_Mean-Variance_Spanning_Tests.pdf",
+    "category": "stat.ME",
+    "title": "High-Dimensional Mean-Variance Spanning Tests",
+    "filepath": "data/raw/stat.ME/High-Dimensional_Mean-Variance_Spanning_Tests.pdf"
+  },
+  {
+    "filename": "High-Frequency_Market_Manipulation_Detection_with_.pdf",
+    "category": "stat.ME",
+    "title": "High-Frequency Market Manipulation Detection with ",
+    "filepath": "data/raw/stat.ME/High-Frequency_Market_Manipulation_Detection_with_.pdf"
+  },
+  {
+    "filename": "Robust_Detection_of_Lead-Lag_Relationships_in_Lagg.pdf",
+    "category": "stat.ML",
+    "title": "Robust Detection of Lead-Lag Relationships in Lagg",
+    "filepath": "data/raw/stat.ML/Robust_Detection_of_Lead-Lag_Relationships_in_Lagg.pdf"
+  }
+]

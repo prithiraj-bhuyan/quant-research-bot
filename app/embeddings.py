@@ -33,8 +33,8 @@ EMBED_MODEL_NAME = "all-MiniLM-L6-v2"
 CHUNK_SIZE       = 500
 CHUNK_OVERLAP    = 80
 PROJECT_ROOT     = Path(__file__).resolve().parent.parent
+LIBRARY_DIR      = str(PROJECT_ROOT / "data" / "raw")
 INDEX_DIR        = str(PROJECT_ROOT / "index")
-LIBRARY_DIR      = str(PROJECT_ROOT / "quant_library")
 INDEX_CONFIG     = "index_config.json"
 
 
