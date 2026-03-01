@@ -7,6 +7,11 @@ Phase 2 endpoints:
   /evaluate          — Run RAGAs-style evaluation
   /evalReport        — Get the latest evaluation report
 
+Phase 3 (MVP) endpoints:
+  /threads           — Research thread CRUD
+  /artifacts/*       — Artifact generation (evidence table, bibliography, memo)
+  /export/*          — Export artifacts as Markdown/CSV
+
 Existing endpoints:
   /getPapers, /papers, /buildEmbeddings, /rebuildEmbeddings,
   /buildStatus, /indexStatus, /search, /removePapers
@@ -14,7 +19,7 @@ Existing endpoints:
 
 from fastapi import FastAPI, BackgroundTasks, HTTPException
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, PlainTextResponse
 from pydantic import BaseModel, Field
 from typing import Optional
 from dataclasses import asdict
@@ -30,8 +35,21 @@ from embeddings import (
 )
 from rag import ask, retrieve_only, RAGResponse
 from evaluation import run_evaluation, DEFAULT_EVAL_QUERIES
+from threads import (
+    Thread, ThreadEntry, save_thread, load_thread,
+    list_threads, delete_thread, add_entry_to_thread,
+)
+from artifacts import (
+    generate_evidence_table, generate_bibliography,
+    generate_synthesis_memo, _load_artifact,
+)
+from export import (
+    export_evidence_table_csv, export_evidence_table_markdown,
+    export_bibliography_markdown, export_bibliography_csv,
+    export_synthesis_memo_markdown,
+)
 
-app = FastAPI(title="Quant Finance Research Portal", version="2.0.0")
+app = FastAPI(title="Quant Finance Research Portal", version="3.0.0")
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
@@ -65,6 +83,7 @@ class ChatRequest(BaseModel):
     conversation_history: Optional[list[dict]] = None
     top_k: int = Field(default=5, ge=1, le=20)
     use_reranker: bool = True
+    thread_id: Optional[str] = None
 
 class RetrieveRequest(BaseModel):
     query: str
@@ -77,6 +96,12 @@ class EvalRequest(BaseModel):
 
 class RemovePapersRequest(BaseModel):
     filepaths: list[str]
+
+class CreateThreadRequest(BaseModel):
+    title: str = Field(default="Untitled Thread", max_length=200)
+
+class ArtifactRequest(BaseModel):
+    thread_id: str
 
 
 # ── Background tasks ──────────────────────────────────────────────────
@@ -178,7 +203,7 @@ def search_papers(req: SearchRequest):
     return {"query": req.query, "results": results}
 
 
-# ── Phase 2: RAG Chat ────────────────────────────────────────────────
+# ── RAG Chat (with optional thread persistence) ─────────────────────
 
 @app.post("/chat")
 def chat(req: ChatRequest):
@@ -189,7 +214,7 @@ def chat(req: ChatRequest):
         rerank_top_k=req.top_k,
         use_reranker=req.use_reranker,
     )
-    return {
+    result = {
         "answer": response.answer,
         "citations": [asdict(c) for c in response.citations],
         "query": response.query,
@@ -200,7 +225,25 @@ def chat(req: ChatRequest):
         },
         "context_chunks_used": response.context_chunks_used,
         "model_used": response.model_used,
+        "trust_signals": response.trust_signals,
     }
+
+    # Persist to thread if thread_id is provided
+    if req.thread_id:
+        try:
+            entry = ThreadEntry(
+                query=req.query,
+                answer=response.answer,
+                citations=[asdict(c) for c in response.citations],
+                evidence_chunks=[asdict(c) for c in response.citations],
+                trust_signals=response.trust_signals,
+            )
+            add_entry_to_thread(req.thread_id, entry)
+            result["thread_id"] = req.thread_id
+        except FileNotFoundError:
+            pass  # Thread doesn't exist - silently skip
+
+    return result
 
 @app.post("/retrieve")
 def retrieve(req: RetrieveRequest):
@@ -212,7 +255,7 @@ def retrieve(req: RetrieveRequest):
     return {"query": req.query, "results": results}
 
 
-# ── Phase 2: Evaluation ──────────────────────────────────────────────
+# ── Evaluation ───────────────────────────────────────────────────────
 
 @app.post("/evaluate")
 def evaluate(req: EvalRequest, bg: BackgroundTasks):
@@ -231,3 +274,125 @@ def eval_report():
                 return json.load(f)
         return {"status": "no_report", "message": "Run /evaluate first."}
     return _eval_report
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# PHASE 3 — RESEARCH THREADS
+# ═══════════════════════════════════════════════════════════════════════
+
+@app.post("/threads")
+def create_thread(req: CreateThreadRequest):
+    """Create a new research thread."""
+    thread = Thread(title=req.title)
+    save_thread(thread)
+    return {"id": thread.id, "title": thread.title, "created_at": thread.created_at}
+
+@app.get("/threads")
+def get_threads():
+    """List all research threads."""
+    return {"threads": list_threads()}
+
+@app.get("/threads/{thread_id}")
+def get_thread(thread_id: str):
+    """Get a specific thread with all entries."""
+    thread = load_thread(thread_id)
+    if thread is None:
+        raise HTTPException(404, f"Thread {thread_id} not found")
+    return asdict(thread)
+
+@app.delete("/threads/{thread_id}")
+def remove_thread(thread_id: str):
+    """Delete a research thread."""
+    if delete_thread(thread_id):
+        return {"status": "deleted", "thread_id": thread_id}
+    raise HTTPException(404, f"Thread {thread_id} not found")
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# PHASE 3 — ARTIFACT GENERATION
+# ═══════════════════════════════════════════════════════════════════════
+
+@app.post("/artifacts/evidenceTable")
+def artifact_evidence_table(req: ArtifactRequest):
+    """Generate an evidence table from a research thread."""
+    try:
+        return generate_evidence_table(req.thread_id)
+    except FileNotFoundError:
+        raise HTTPException(404, f"Thread {req.thread_id} not found")
+
+@app.post("/artifacts/bibliography")
+def artifact_bibliography(req: ArtifactRequest):
+    """Generate an annotated bibliography from a research thread."""
+    try:
+        return generate_bibliography(req.thread_id)
+    except FileNotFoundError:
+        raise HTTPException(404, f"Thread {req.thread_id} not found")
+
+@app.post("/artifacts/synthesisMemo")
+def artifact_synthesis_memo(req: ArtifactRequest):
+    """Generate a synthesis memo from a research thread."""
+    try:
+        return generate_synthesis_memo(req.thread_id)
+    except FileNotFoundError:
+        raise HTTPException(404, f"Thread {req.thread_id} not found")
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# PHASE 3 — EXPORT
+# ═══════════════════════════════════════════════════════════════════════
+
+@app.get("/export/{thread_id}/{artifact_type}")
+def export_artifact(thread_id: str, artifact_type: str, format: str = "markdown"):
+    """
+    Export a generated artifact as Markdown or CSV.
+    artifact_type: evidenceTable | bibliography | synthesisMemo
+    format: markdown | csv
+    """
+    # Map URL names to internal names
+    type_map = {
+        "evidenceTable": "evidence_table",
+        "evidence_table": "evidence_table",
+        "bibliography": "bibliography",
+        "synthesisMemo": "synthesis_memo",
+        "synthesis_memo": "synthesis_memo",
+    }
+    internal_type = type_map.get(artifact_type)
+    if not internal_type:
+        raise HTTPException(400, f"Unknown artifact type: {artifact_type}")
+
+    data = _load_artifact(thread_id, internal_type)
+    if data is None:
+        raise HTTPException(404, f"No {artifact_type} artifact found for thread {thread_id}. Generate it first.")
+
+    # Build export content
+    if internal_type == "evidence_table":
+        if format == "csv":
+            content = export_evidence_table_csv(data)
+            media_type = "text/csv"
+            ext = "csv"
+        else:
+            content = export_evidence_table_markdown(data)
+            media_type = "text/markdown"
+            ext = "md"
+    elif internal_type == "bibliography":
+        if format == "csv":
+            content = export_bibliography_csv(data)
+            media_type = "text/csv"
+            ext = "csv"
+        else:
+            content = export_bibliography_markdown(data)
+            media_type = "text/markdown"
+            ext = "md"
+    elif internal_type == "synthesis_memo":
+        content = export_synthesis_memo_markdown(data)
+        media_type = "text/markdown"
+        ext = "md"
+    else:
+        raise HTTPException(400, "Unsupported export type")
+
+    filename = f"{artifact_type}_{thread_id}.{ext}"
+    return PlainTextResponse(
+        content=content,
+        media_type=media_type,
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )

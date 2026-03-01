@@ -63,6 +63,7 @@ class RAGResponse:
     generation_time_ms: float
     context_chunks_used: int
     model_used: str
+    trust_signals: dict = field(default_factory=dict)
 
 
 # ---------------------------------------------------------------------------
@@ -150,7 +151,21 @@ def format_citations_block(citations: list[Citation]) -> str:
 # LLM Generation
 # ---------------------------------------------------------------------------
 
-SYSTEM_PROMPT = """You are a quantitative finance research assistant. Answer using ONLY the provided sources. Cite inline with [1], [2] etc. If sources lack info, say so. Be precise and technical. Do NOT add a references section at the end — citations are handled separately."""
+SYSTEM_PROMPT = """You are a quantitative finance research assistant.
+
+RULES:
+1. Cite every factual claim with [1], [2], etc.
+2. If evidence is missing, note it briefly at the end.
+3. Do NOT add a references section.
+
+RESPONSE FORMAT — CRITICAL:
+- Write exactly ONE concise paragraph of 4-8 sentences.
+- NEVER repeat yourself. Each sentence must add new information.
+- NEVER reproduce raw text, source headers, or equation numbers from the sources.
+- NEVER write multi-line equations or derivation chains.
+- Synthesize and explain concepts in your own words.
+- You may use simple inline LaTeX like $\\sigma^2$ or $\\frac{a}{b}$ sparingly.
+- Focus on: key insight, method, result, and limitations."""
 
 
 def _get_llm_client():
@@ -175,7 +190,7 @@ def _call_llm(messages: list[dict], model: str = LLM_MODEL) -> str:
             model=model,
             messages=messages,
             temperature=0.1,
-            max_tokens=2048,
+            max_tokens=512,
         )
         return response.choices[0].message.content
     except Exception as e:
@@ -197,6 +212,75 @@ def _build_fallback_answer(query: str, citations: list[Citation]) -> str:
         parts.append(f"**[{i+1}] {c.paper_title}** — §{c.section}")
         parts.append(f"> {c.chunk_text[:300]}…\n")
     return "\n".join(parts)
+
+
+def _clean_answer(answer: str) -> str:
+    """Post-process LLM answer to strip leaked source artifacts."""
+    import re
+
+    # Remove leaked citation headers: [[N]] "Paper Title" | §Section | p.N
+    answer = re.sub(r'\[\[\d+\]\]\s*"[^"]*"\s*\|[^\n]*\n?', '', answer)
+
+    # Remove standalone equation numbers like (16), (17) on their own line
+    answer = re.sub(r'^\s*\(\d+\)\s*$', '', answer, flags=re.MULTILINE)
+
+    # Remove self-prompting lines
+    answer = re.sub(r'(?i)^.*please\s+(answer|provide|explain)\s+the\s+following.*$', '', answer, flags=re.MULTILINE)
+
+    # Strip leading garbage: find the first line that looks like real English prose
+    # (starts with a letter and contains at least 5 word characters)
+    lines = answer.split('\n')
+    first_good = 0
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+        if stripped and re.match(r'^[A-Z]', stripped) and len(re.findall(r'[a-zA-Z]', stripped)) >= 5:
+            first_good = i
+            break
+    answer = '\n'.join(lines[first_good:])
+
+    # Collapse multiple blank lines
+    answer = re.sub(r'\n{3,}', '\n\n', answer)
+
+    # Strip leading/trailing whitespace
+    answer = answer.strip()
+
+    return answer
+
+
+
+def _detect_missing_evidence(query: str, answer: str, citations: list[Citation]) -> dict:
+    """Analyze the answer for trust signals: citation coverage and evidence gaps."""
+    hedging_phrases = [
+        "not enough information", "sources do not", "no relevant",
+        "cannot determine", "insufficient", "not covered",
+        "evidence gap", "limited information", "unclear from",
+        "not directly addressed", "no sources",
+    ]
+    answer_lower = answer.lower()
+
+    has_citations = bool(citations) and any(f"[{i+1}]" in answer for i in range(len(citations)))
+    has_hedging = any(phrase in answer_lower for phrase in hedging_phrases)
+    few_citations = len(citations) < 2
+
+    # Extract suggested follow-up if present in the answer
+    suggested_followup = ""
+    if "suggested follow-up:" in answer_lower:
+        idx = answer_lower.index("suggested follow-up:")
+        followup_text = answer[idx + len("suggested follow-up:"):].strip()
+        # Take up to the next newline or end
+        suggested_followup = followup_text.split("\n")[0].strip().strip('"')
+    elif has_hedging or few_citations:
+        # Generate a suggestion based on the query
+        suggested_followup = f"Try refining: '{query}' with more specific terms or broader topic coverage."
+
+    missing_evidence = has_hedging or few_citations
+
+    return {
+        "has_citations": has_citations,
+        "citation_count": len(citations),
+        "missing_evidence": missing_evidence,
+        "suggested_followup": suggested_followup,
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -258,9 +342,9 @@ def ask(query: str,
     user_prompt = f"""SOURCES:
 {context}
 
-Q: {query}
+QUESTION: {query}
 
-Answer with [N] citations."""
+Write ONE concise paragraph (4-8 sentences) answering the question. Cite sources as [N]. Do not repeat yourself. Do not copy raw text from sources."""
 
     messages.append({"role": "user", "content": user_prompt})
 
@@ -269,6 +353,10 @@ Answer with [N] citations."""
 
     if llm_answer is None:
         llm_answer = _build_fallback_answer(query, citations)
+    else:
+        llm_answer = _clean_answer(llm_answer)
+
+    trust_signals = _detect_missing_evidence(query, llm_answer, citations)
 
     return RAGResponse(
         answer=llm_answer,
@@ -279,6 +367,7 @@ Answer with [N] citations."""
         generation_time_ms=round(generation_ms, 1),
         context_chunks_used=len(top_chunks),
         model_used=LLM_MODEL,
+        trust_signals=trust_signals,
     )
 
 
