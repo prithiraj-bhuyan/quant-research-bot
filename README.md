@@ -133,10 +133,3 @@ Alpha Research Portal/
 | `ModuleNotFoundError` | Run `poetry install` |
 | `429 Too Many Requests` | Hit Groq rate limit — wait 60s or use a paid key |
 | `ASGI app not found` | Make sure you run from inside the `app/` directory |
-
----
-
-## Additional Docs
-
-- **[DEMO_WALKTHROUGH.txt](DEMO_WALKTHROUGH.txt)** — Step-by-step demo script (15-20 min)
-- **[TECHNICAL_REPORT.txt](TECHNICAL_REPORT.txt)** — Architecture, evaluation, limitations, next steps
