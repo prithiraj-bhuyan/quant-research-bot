@@ -34,7 +34,7 @@ CHUNK_SIZE       = 500
 CHUNK_OVERLAP    = 80
 PROJECT_ROOT     = Path(__file__).resolve().parent.parent
 INDEX_DIR        = str(PROJECT_ROOT / "index")
-LIBRARY_DIR      = str(PROJECT_ROOT / "quant_library")
+LIBRARY_DIR      = str(PROJECT_ROOT / "data")
 INDEX_CONFIG     = "index_config.json"
 
 

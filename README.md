@@ -80,7 +80,7 @@ Alpha Research Portal/
 │   ├── export.py        # Markdown/CSV export
 │   └── scraper.py       # arXiv paper fetcher
 ├── chat.html            # Frontend UI
-├── quant_library/       # Downloaded PDFs (by arXiv category)
+├── data/                # Downloaded PDFs (by arXiv category)
 ├── index/               # Search indices (auto-generated)
 ├── threads/             # Saved research threads
 ├── artifacts/           # Generated artifacts
