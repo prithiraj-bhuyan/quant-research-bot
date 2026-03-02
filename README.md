@@ -1,4 +1,4 @@
-# Alpha Research Portal
+# Quant Research Portal
 
 A RAG-powered research assistant for quantitative finance papers. Fetches papers from arXiv, builds hybrid search indices, and generates concise, citation-backed answers.
 
