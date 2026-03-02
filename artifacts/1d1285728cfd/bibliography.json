@@ -1,0 +1,32 @@
+{
+  "thread_id": "1d1285728cfd",
+  "thread_title": "Demo Thread",
+  "artifact_type": "bibliography",
+  "total_sources": 4,
+  "sources": [
+    {
+      "source": "Mean-Reverting Portfolio Design with Budget Constraints",
+      "method": "The paper applies mean-variance portfolio optimization, a foundational framework in portfolio management, to design portfolios with budget constraints. This approach involves finding a tradeoff between expected return and portfolio variance.",
+      "limitations": "The traditional mean-variance approach has limitations, such as assuming a fixed expected return and not accounting for high-dimensionality estimators. The paper's focus on budget constraints may also limit its applicability to other portfolio construction scenarios.",
+      "why_it_matters": "This paper is relevant to understanding how mean-variance optimization is applied in portfolio construction, particularly in the context of budget constraints. It provides insights into the foundational frameworks used in portfolio management."
+    },
+    {
+      "source": "Random Matrix Theory and Nested Clustered Portfolios",
+      "method": "The paper applies random matrix theory (RMT) to analyze the effect of high-dimensionality estimators on portfolio optimization strategies, including the Markowitz mean-variance approach. It uses optimal linear estimators and limited Tracy-Widom distribution-based estimators.",
+      "limitations": "The paper's focus on RMT and high-dimensionality estimators may limit its applicability to other portfolio construction scenarios. The use of specific estimators may also introduce biases or limitations.",
+      "why_it_matters": "This paper is relevant to understanding how mean-variance optimization is applied in portfolio construction, particularly in the context of high-dimensionality estimators. It provides insights into the use of RMT in portfolio optimization."
+    },
+    {
+      "source": "Optimal Shrinkage-Based Portfolio Selection in High-Dimensional Settings",
+      "method": "The paper constructs a linear shrinkage estimator to estimate the mean-variance portfolio in high-dimensional settings, using results from random matrix theory. The estimator is distribution-free and optimal in the sense of maximizing asymptotic out-of-sample expected utility.",
+      "limitations": "The paper's focus on high-dimensional settings may limit its applicability to other portfolio construction scenarios. The use of a specific shrinkage estimator may also introduce biases or limitations.",
+      "why_it_matters": "This paper is relevant to understanding how mean-variance optimization is applied in portfolio construction, particularly in high-dimensional settings. It provides insights into the use of shrinkage estimators in portfolio optimization."
+    },
+    {
+      "source": "Markowitz, H. (1952) - Portfolio Selection",
+      "method": "The seminal paper by Markowitz (1952) laid the foundations of mean-variance portfolio optimization, which involves minimizing portfolio variance assuming a fixed expected return. The approach justifies the use of mean-variance optimization in portfolio construction.",
+      "limitations": "The paper's assumptions, such as a fixed expected return, may limit its applicability to real-world portfolio construction scenarios. The approach may also not account for other important factors, such as risk aversion or budget constraints.",
+      "why_it_matters": "This paper is relevant to understanding the foundational frameworks used in portfolio management, particularly mean-variance optimization. It provides insights into the development of modern portfolio theory."
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "id": "1d1285728cfd",
+  "title": "Demo Thread",
+  "created_at": "2026-03-01T23:20:44.781038+00:00",
+  "updated_at": "2026-03-01T23:25:32.438504+00:00",
+  "entries": [
+    {
+      "query": "How is mean-variance optimization applied in portfolio construction?",
+      "answer": "Mean-variance optimization is a fundamental concept in portfolio construction, aiming to balance expected returns and risk [1]. This approach, introduced by Markowitz in 1952, involves minimizing portfolio variance for a given expected return or maximizing expected return for a given level of risk [5]. The optimization problem is typically formulated as a quadratic utility function, where the investor's risk aversion is captured by a parameter [5]. The solution to this problem yields the optimal portfolio weights, which can be obtained using various methods, including linear shrinkage estimators [3] and random matrix theory [2]. In practice, mean-variance optimization is often challenged by the estimation of covariance matrices, particularly in high-dimensional settings [4]. To address this issue, researchers have proposed alternative approaches, such as shrinkage-based portfolio selection [3] and nested clustered portfolio optimization [2]. Overall, mean-variance optimization remains a cornerstone of portfolio construction, with ongoing research focused on improving its implementation and robustness [1]. Evidence on the effectiveness of these methods is still being gathered [5].",
+      "citations": [
+        {
+          "paper_title": "Mean-Reverting Portfolio Design with Budget Constr",
+          "section": "Header/Preamble",
+          "page_number": 1,
+          "category": "q-fin.PM",
+          "relevance_score": 4.360203266143799,
+          "chunk_text": "in portfolio management as well as in\nalgorithmic trading. The seminal paper [23] by Markowitz in\n1952 laid on the foundations of what is now popularly re-\n\nSubmitted paper\n2\nferred to as mean-variance portfolio optimization and modern\nportfolio theory. Given a collection of \ufb01nancial assets, the\ntraditional mean-variance portfolio design problem is aimed\nat \ufb01nding a tradeoff between the expected return and the risk\nmeasured by the variance. Different from the requirements for\nmean-variance portf"
+        },
+        {
+          "paper_title": "Random matrix theory and nested clustered portfoli",
+          "section": "Introduction",
+          "page_number": 2,
+          "category": "q-fin.ST",
+          "relevance_score": 3.9134950637817383,
+          "chunk_text": "assets. To fulfill this purpose 1, we analyze the effect of applying high-dimensionality\nestimators of the covariance matrix under the two discussed portfolio optimization strategies. In particular, it is\napplied the optimal linear estimator [16] and an estimator based on the limited Tracy-Widom distribution [17],\nboth based on RMT. The portfolios are built using the Markowitz mean-variance approach and our allocation\nvariation of NCO. The strategies are tested and contextualized in a set of ass"
+        },
+        {
+          "paper_title": "Optimal shrinkage-based portfolio selection in hig",
+          "section": "Abstract",
+          "page_number": 1,
+          "category": "q-fin.ST",
+          "relevance_score": 3.526296377182007,
+          "chunk_text": "In this paper we estimate the mean-variance portfolio in the high-dimensional case\nusing the recent results from the theory of random matrices.\nWe construct a linear\nshrinkage estimator which is distribution-free and is optimal in the sense of maximizing\nwith probability 1 the asymptotic out-of-sample expected utility, i.e., mean-variance ob-\njective function for di\ufb00erent values of risk aversion coe\ufb03cient which in particular leads\nto the maximization of the out-of-sample expected utility and to "
+        },
+        {
+          "paper_title": "Optimal shrinkage-based portfolio selection in hig",
+          "section": "Introduction",
+          "page_number": 3,
+          "category": "q-fin.ST",
+          "relevance_score": 3.1168205738067627,
+          "chunk_text": "mentioning that there are clear links between the subject of the paper and clas-\nsical methods in statistical signal processing. The data generating process considered in the\npaper encompasses a broad range of system con\ufb01gurations described by the general vector chan-\nnel model. Moreover, as for the aforementioned mean-variance portfolio optimization problem,\n3\n\nusual linear \ufb01ltering schemes solving typical signal waveform estimation and detection problems\nin signal array processing and wireless"
+        },
+        {
+          "paper_title": "Optimal shrinkage-based portfolio selection in hig",
+          "section": "Introduction",
+          "page_number": 1,
+          "category": "q-fin.ST",
+          "relevance_score": 2.6940836906433105,
+          "chunk_text": "In the seminal paper of Markowitz (1952) the author suggests to determine the optimal compo-\nsition of a portfolio of \ufb01nancial assets by minimizing the portfolio variance assuming that the\nexpected portfolio return attains some prespeci\ufb01ed \ufb01xed value. By varying this value we obtain\nthe whole e\ufb03cient frontier in the mean-standard deviation space. Despite of its simplicity, this\napproach justi\ufb01es the advantages of diversi\ufb01cation and is a standard technique and benchmark\nin asset management. Equiv"
+        }
+      ],
+      "evidence_chunks": [
+        {
+          "paper_title": "Mean-Reverting Portfolio Design with Budget Constr",
+          "section": "Header/Preamble",
+          "page_number": 1,
+          "category": "q-fin.PM",
+          "relevance_score": 4.360203266143799,
+          "chunk_text": "in portfolio management as well as in\nalgorithmic trading. The seminal paper [23] by Markowitz in\n1952 laid on the foundations of what is now popularly re-\n\nSubmitted paper\n2\nferred to as mean-variance portfolio optimization and modern\nportfolio theory. Given a collection of \ufb01nancial assets, the\ntraditional mean-variance portfolio design problem is aimed\nat \ufb01nding a tradeoff between the expected return and the risk\nmeasured by the variance. Different from the requirements for\nmean-variance portf"
+        },
+        {
+          "paper_title": "Random matrix theory and nested clustered portfoli",
+          "section": "Introduction",
+          "page_number": 2,
+          "category": "q-fin.ST",
+          "relevance_score": 3.9134950637817383,
+          "chunk_text": "assets. To fulfill this purpose 1, we analyze the effect of applying high-dimensionality\nestimators of the covariance matrix under the two discussed portfolio optimization strategies. In particular, it is\napplied the optimal linear estimator [16] and an estimator based on the limited Tracy-Widom distribution [17],\nboth based on RMT. The portfolios are built using the Markowitz mean-variance approach and our allocation\nvariation of NCO. The strategies are tested and contextualized in a set of ass"
+        },
+        {
+          "paper_title": "Optimal shrinkage-based portfolio selection in hig",
+          "section": "Abstract",
+          "page_number": 1,
+          "category": "q-fin.ST",
+          "relevance_score": 3.526296377182007,
+          "chunk_text": "In this paper we estimate the mean-variance portfolio in the high-dimensional case\nusing the recent results from the theory of random matrices.\nWe construct a linear\nshrinkage estimator which is distribution-free and is optimal in the sense of maximizing\nwith probability 1 the asymptotic out-of-sample expected utility, i.e., mean-variance ob-\njective function for di\ufb00erent values of risk aversion coe\ufb03cient which in particular leads\nto the maximization of the out-of-sample expected utility and to "
+        },
+        {
+          "paper_title": "Optimal shrinkage-based portfolio selection in hig",
+          "section": "Introduction",
+          "page_number": 3,
+          "category": "q-fin.ST",
+          "relevance_score": 3.1168205738067627,
+          "chunk_text": "mentioning that there are clear links between the subject of the paper and clas-\nsical methods in statistical signal processing. The data generating process considered in the\npaper encompasses a broad range of system con\ufb01gurations described by the general vector chan-\nnel model. Moreover, as for the aforementioned mean-variance portfolio optimization problem,\n3\n\nusual linear \ufb01ltering schemes solving typical signal waveform estimation and detection problems\nin signal array processing and wireless"
+        },
+        {
+          "paper_title": "Optimal shrinkage-based portfolio selection in hig",
+          "section": "Introduction",
+          "page_number": 1,
+          "category": "q-fin.ST",
+          "relevance_score": 2.6940836906433105,
+          "chunk_text": "In the seminal paper of Markowitz (1952) the author suggests to determine the optimal compo-\nsition of a portfolio of \ufb01nancial assets by minimizing the portfolio variance assuming that the\nexpected portfolio return attains some prespeci\ufb01ed \ufb01xed value. By varying this value we obtain\nthe whole e\ufb03cient frontier in the mean-standard deviation space. Despite of its simplicity, this\napproach justi\ufb01es the advantages of diversi\ufb01cation and is a standard technique and benchmark\nin asset management. Equiv"
+        }
+      ],
+      "trust_signals": {
+        "has_citations": true,
+        "citation_count": 5,
+        "missing_evidence": false,
+        "suggested_followup": ""
+      },
+      "timestamp": "2026-03-01T23:25:32.438007+00:00"
+    }
+  ]
+}

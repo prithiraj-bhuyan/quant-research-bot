@@ -1,0 +1,79 @@
+{
+  "thread_id": "450ef0c47cbf",
+  "thread_title": "Research 3/1/2026",
+  "artifact_type": "evidence_table",
+  "total_claims": 10,
+  "total_sources": 2,
+  "claims": [
+    {
+      "claim": "The Markowitz framework suffers from instability due to highly correlated assets.",
+      "evidence_snippet": "The asset allocation problem suffers from significant instability from the classical Markowitz perspective due to highly correlated assets increase the condition number.",
+      "citation": "Random matrix theory and nested clustered portfoli, \u00a7Conclusion",
+      "confidence": "High",
+      "notes": "Directly states the limitation of the Markowitz framework"
+    },
+    {
+      "claim": "Highly correlated portfolios are common during systemic contagion events.",
+      "evidence_snippet": "A highly correlated portfolio is common during systemic contagion events since they lead to co-movements within the financial markets.",
+      "citation": "Random matrix theory and nested clustered portfoli, \u00a7Conclusion",
+      "confidence": "High",
+      "notes": "Specific context for highly correlated portfolios"
+    },
+    {
+      "claim": "The Markowitz framework is limited by poor diversification among stocks.",
+      "evidence_snippet": "Such investment weights of lower diversi\ufb01cation among stocks within a portfolio function as a limitation to the use of the portfolio theory in practical applications.",
+      "citation": "The Effects of Market Properties on Portfolio Dive, \u00a7INTRODUCTION",
+      "confidence": "High",
+      "notes": "Directly states the limitation of the Markowitz framework"
+    },
+    {
+      "claim": "Random matrix theory can improve portfolio management by controlling the correlation matrix.",
+      "evidence_snippet": "observed results exist which indicate that portfolio management can be improved by controlling the correlation matrix, as an imp",
+      "citation": "The Effects of Market Properties on Portfolio Dive, \u00a7INTRODUCTION",
+      "confidence": "Medium",
+      "notes": "Suggests a potential solution to the limitation"
+    },
+    {
+      "claim": "The Markowitz framework assumes a quadratic optimization problem for asset allocation.",
+      "evidence_snippet": "The modern portfolio theory of Markowitz [5] formulates the asset allocation problem as a quadratic optimization problem.",
+      "citation": "Random matrix theory and nested clustered portfoli, \u00a7Introduction",
+      "confidence": "High",
+      "notes": "Directly states the assumption of the Markowitz framework"
+    },
+    {
+      "claim": "Non-diagonal elements of the covariance matrix can be a weakness of the Markowitz framework.",
+      "evidence_snippet": "A weakness of Markowitz\u2019s portfolio theory is that if the non-diagonal elements of the covariance matrix are not negligible,",
+      "citation": "Random matrix theory and nested clustered portfoli, \u00a7Introduction",
+      "confidence": "High",
+      "notes": "Specific condition for the limitation"
+    },
+    {
+      "claim": "Markowitz's portfolio theory proposes a quantitative method for structuring a portfolio with minimum risk or maximum return.",
+      "evidence_snippet": "Markowitz\u2019s portfolio theory has had a signi\ufb01cant in\ufb02uence on portfolio research, in that it proposes a quantitative method for structuring a portfolio with a minimum (maximum) risk (return) for a given return (risk) [1].",
+      "citation": "The Effects of Market Properties on Portfolio Dive, \u00a7INTRODUCTION",
+      "confidence": "High",
+      "notes": "Directly states the contribution of Markowitz's portfolio theory"
+    },
+    {
+      "claim": "Diversification requires well-distributed investment weights for stocks in a portfolio.",
+      "evidence_snippet": "investment weights for stocks in a portfolio require well-distributed diversi\ufb01cation to effectively reduce the risk of a portfolio.",
+      "citation": "The Effects of Market Properties on Portfolio Dive, \u00a7INTRODUCTION",
+      "confidence": "High",
+      "notes": "Specific condition for effective diversification"
+    },
+    {
+      "claim": "The Markowitz framework uses a mean-variance allocation strategy to minimize portfolio risk.",
+      "evidence_snippet": "The mean-variance allocation strategy of Markowitz [25] proposes to solve the following quadratic optimization problem to minimize the portfolio risk at a given level of expected return",
+      "citation": "Random matrix theory and nested clustered portfoli, \u00a7Introduction",
+      "confidence": "High",
+      "notes": "Directly states the strategy used by the Markowitz framework"
+    },
+    {
+      "claim": "The optimal portfolio in the Markowitz framework is found using the inverse of the covariance matrix.",
+      "evidence_snippet": "Hence, without considering any constraint on the weights and only assuming that the inverse of \u03a3 exists, the optimal portfolio is found to be \u02c6w = \u03b3\u03a3\u22121g",
+      "citation": "Random matrix theory and nested clustered portfoli, \u00a7Introduction",
+      "confidence": "High",
+      "notes": "Specific mathematical formulation for the optimal portfolio"
+    }
+  ]
+}

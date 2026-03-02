@@ -1,0 +1,72 @@
+{
+  "thread_id": "1d1285728cfd",
+  "thread_title": "Demo Thread",
+  "artifact_type": "evidence_table",
+  "total_claims": 9,
+  "total_sources": 3,
+  "claims": [
+    {
+      "claim": "Mean-variance portfolio optimization is a foundational concept in portfolio management and algorithmic trading.",
+      "evidence_snippet": "The seminal paper [23] by Markowitz in 1952 laid on the foundations of what is now popularly referred to as mean-variance portfolio optimization and modern portfolio theory.",
+      "citation": "Mean-Reverting Portfolio Design with Budget Constr, \u00a7Header/Preamble",
+      "confidence": "High",
+      "notes": "Direct reference to Markowitz's seminal paper"
+    },
+    {
+      "claim": "Mean-variance portfolio design aims to find a tradeoff between expected return and risk measured by variance.",
+      "evidence_snippet": "The traditional mean-variance portfolio design problem is aimed at finding a tradeoff between the expected return and the risk measured by the variance.",
+      "citation": "Mean-Reverting Portfolio Design with Budget Constr, \u00a7Header/Preamble",
+      "confidence": "High",
+      "notes": "Clear definition of mean-variance portfolio design"
+    },
+    {
+      "claim": "Random matrix theory (RMT) can be applied to estimate the covariance matrix in portfolio optimization.",
+      "evidence_snippet": "We analyze the effect of applying high-dimensionality estimators of the covariance matrix under the two discussed portfolio optimization strategies.",
+      "citation": "Random matrix theory and nested clustered portfoli, \u00a7Introduction",
+      "confidence": "Medium",
+      "notes": "RMT is mentioned as a tool for estimating covariance matrix"
+    },
+    {
+      "claim": "The Markowitz mean-variance approach is a common method for building portfolios.",
+      "evidence_snippet": "The portfolios are built using the Markowitz mean-variance approach and our allocation variation of NCO.",
+      "citation": "Random matrix theory and nested clustered portfoli, \u00a7Introduction",
+      "confidence": "High",
+      "notes": "Direct reference to Markowitz mean-variance approach"
+    },
+    {
+      "claim": "Shrinkage estimators can be used to estimate the mean-variance portfolio in high-dimensional cases.",
+      "evidence_snippet": "We construct a linear shrinkage estimator which is distribution-free and is optimal in the sense of maximizing with probability 1 the asymptotic out-of-sample expected utility.",
+      "citation": "Optimal shrinkage-based portfolio selection in hig, \u00a7Abstract",
+      "confidence": "High",
+      "notes": "Shrinkage estimators are proposed as a solution for high-dimensional cases"
+    },
+    {
+      "claim": "Mean-variance portfolio optimization is related to classical methods in statistical signal processing.",
+      "evidence_snippet": "There are clear links between the subject of the paper and classical methods in statistical signal processing.",
+      "citation": "Optimal shrinkage-based portfolio selection in hig, \u00a7Introduction",
+      "confidence": "Medium",
+      "notes": "Mean-variance optimization is mentioned in the context of signal processing"
+    },
+    {
+      "claim": "Markowitz's seminal paper (1952) suggests minimizing portfolio variance to determine optimal portfolio composition.",
+      "evidence_snippet": "The author suggests to determine the optimal composition of a portfolio of financial assets by minimizing the portfolio variance assuming that the expected portfolio return attains some prespecified fixed value.",
+      "citation": "Optimal shrinkage-based portfolio selection in hig, \u00a7Introduction",
+      "confidence": "High",
+      "notes": "Direct reference to Markowitz's seminal paper"
+    },
+    {
+      "claim": "Mean-variance optimization justifies the advantages of diversification in asset management.",
+      "evidence_snippet": "This approach justifies the advantages of diversification and is a standard technique and benchmark in asset management.",
+      "citation": "Optimal shrinkage-based portfolio selection in hig, \u00a7Introduction",
+      "confidence": "High",
+      "notes": "Mean-variance optimization is mentioned as a justification for diversification"
+    },
+    {
+      "claim": "The efficient frontier in the mean-standard deviation space can be obtained by varying the expected portfolio return.",
+      "evidence_snippet": "By varying this value we obtain the whole efficient frontier in the mean-standard deviation space.",
+      "citation": "Optimal shrinkage-based portfolio selection in hig, \u00a7Introduction",
+      "confidence": "High",
+      "notes": "Clear explanation of how to obtain the efficient frontier"
+    }
+  ]
+}

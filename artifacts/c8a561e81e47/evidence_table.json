@@ -1,0 +1,79 @@
+{
+  "thread_id": "c8a561e81e47",
+  "thread_title": "Demo 2",
+  "artifact_type": "evidence_table",
+  "total_claims": 10,
+  "total_sources": 4,
+  "claims": [
+    {
+      "claim": "Transaction costs act as a constraint against portfolio rebalancing.",
+      "evidence_snippet": "This cost acts as a constraint against re-balancing, which means that, to maintain an optimal portfolio at each time instant, t the investor needs to forgo an amount equal to the execution cost.",
+      "citation": "Singular Perturbation Expansion for Utility Maximi, \u00a7Introduction",
+      "confidence": "High",
+      "notes": "Directly states the impact of transaction costs on portfolio rebalancing."
+    },
+    {
+      "claim": "Optimal portfolio liquidation can be obtained using a specific optimization problem.",
+      "evidence_snippet": "The optimal portfolio liquidation can be obtained using the following optimization problem: q\u22c6(\u03bb) = arg min 1 2\u03c32 (q | \u03c9) + \u03bbc (q | \u03c9)",
+      "citation": "Liquidity Stress Testing in Asset Management, \u00a7Introduction",
+      "confidence": "High",
+      "notes": "Provides a mathematical formulation for optimal portfolio liquidation."
+    },
+    {
+      "claim": "Transaction costs have a significant impact on portfolio optimization.",
+      "evidence_snippet": "We present an expansion for portfolio optimization in the presence of small, instantaneous, quadratic transaction costs.",
+      "citation": "Singular Perturbation Expansion for Utility Maximi, \u00a7Abstract",
+      "confidence": "High",
+      "notes": "Highlights the importance of considering transaction costs in portfolio optimization."
+    },
+    {
+      "claim": "Rebalancing strategies can be less profitable than buy-and-hold strategies due to transaction costs.",
+      "evidence_snippet": "the rebalancing strategy makes 2.400 conditional on reaching P U 1 , like the buy-and-hold strategy, or any other strategy trading at market prices.",
+      "citation": "Automated Market Making and Loss-Versus-Rebalancin, \u00a7Appendix",
+      "confidence": "Medium",
+      "notes": "Suggests that rebalancing strategies may not always outperform buy-and-hold strategies."
+    },
+    {
+      "claim": "Transaction costs can lead to portfolio distortion.",
+      "evidence_snippet": "The portfolio distortion is then measured by the tracking error between the portfolio before the redemption and the po",
+      "citation": "Liquidity Stress Testing in Asset Management, \u00a7Introduction",
+      "confidence": "Medium",
+      "notes": "Implies that transaction costs can cause deviations from optimal portfolio allocations."
+    },
+    {
+      "claim": "Optimal execution of portfolio transactions is a well-studied problem.",
+      "evidence_snippet": "R. F. Almgren and N. Chriss. Optimal execution of portfolio transactions. J. Risk, 3:5\u201340, 2001.",
+      "citation": "Liquidity in Competitive Dealer Markets, \u00a7References",
+      "confidence": "High",
+      "notes": "Cites a specific paper on optimal execution of portfolio transactions."
+    },
+    {
+      "claim": "Hedging and portfolio optimization are related problems.",
+      "evidence_snippet": "P. Bank and D. Baum. Hedging and portfolio optimization in \ufb01nancial markets with a large trader. Math. Finance, 14(1):1\u201318, 2004.",
+      "citation": "Liquidity in Competitive Dealer Markets, \u00a7References",
+      "confidence": "Medium",
+      "notes": "Suggests a connection between hedging and portfolio optimization."
+    },
+    {
+      "claim": "Temporary price impact can affect hedging and portfolio optimization.",
+      "evidence_snippet": "P. Bank, M. Soner, and M. Vo\u00df. Hedging with temporary price impact. Math. Fin. Econ., 11(2):215\u2013239, 2017.",
+      "citation": "Liquidity in Competitive Dealer Markets, \u00a7References",
+      "confidence": "Medium",
+      "notes": "Highlights the importance of considering temporary price impact in hedging and portfolio optimization."
+    },
+    {
+      "claim": "Linear quadratic stochastic control problems can be used to model portfolio optimization.",
+      "evidence_snippet": "P. Bank and M. Vo\u00df. Linear quadratic stochastic control problems with singular stochastic terminal constraint. SIAM J. Control Optim., 56(2):672\u2013699,",
+      "citation": "Liquidity in Competitive Dealer Markets, \u00a7References",
+      "confidence": "Medium",
+      "notes": "Suggests a specific mathematical framework for modeling portfolio optimization."
+    },
+    {
+      "claim": "Rebalancing strategies can be profitable when prices increase after a decrease.",
+      "evidence_snippet": "it profits relative to buy-and-hold when prices increase to P DU 2 = 1, and loses if prices decrease further to P DD 2 = 0.2.",
+      "citation": "Automated Market Making and Loss-Versus-Rebalancin, \u00a7Appendix",
+      "confidence": "Medium",
+      "notes": "Provides a specific scenario where rebalancing strategies can be profitable."
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "id": "450ef0c47cbf",
+  "title": "Research 3/1/2026",
+  "created_at": "2026-03-01T22:49:41.644801+00:00",
+  "updated_at": "2026-03-01T22:49:53.941945+00:00",
+  "entries": [
+    {
+      "query": "What are the limitations of the Markowitz framework?",
+      "answer": "The Markowitz framework, a cornerstone of modern portfolio theory, has several limitations [1]. One major issue is the instability of the allocation solutions, which increases with the number of assets, a phenomenon known as Markowitz's curse [3]. This curse is exacerbated in high-dimensional scenarios where the number of assets is of the order of the number of observations [5]. Furthermore, the Markowitz framework assumes that the covariance matrix is known a priori, which is not the case in real-world situations [5]. The framework also suffers from the problem of highly correlated assets, which can lead to a high condition number and unstable solutions [1]. Additionally, the framework does not account for non-stationarity phenomena, which can occur in financial markets during periods of structural changes [1]. Overall, these limitations highlight the need for alternative approaches, such as the Nested Clustered Optimization (NCO) algorithm and Random Matrix Theory (RMT), to improve portfolio optimization [2].",
+      "citations": [
+        {
+          "paper_title": "Random matrix theory and nested clustered portfoli",
+          "section": "Conclusion",
+          "page_number": 10,
+          "category": "q-fin.ST",
+          "relevance_score": -0.7947173118591309,
+          "chunk_text": "The asset allocation problem suffers from significant instability from the classical Markowitz perspective due to\nhighly correlated assets increase the condition number. A highly correlated portfolio is common during systemic\ncontagion events since they lead to co-movements within the financial markets. At the same time, we are subject\nto periods of structural changes in the financial markets derived from financial turmoil. Then, it is preferable\nto consider a relatively small number of records "
+        },
+        {
+          "paper_title": "The Effects of Market Properties on Portfolio Dive",
+          "section": "INTRODUCTION",
+          "page_number": 3,
+          "category": "q-fin.PM",
+          "relevance_score": -1.1727505922317505,
+          "chunk_text": "are con-\ncentrated on a few stocks\u2013that is to say, they are not well distributed. Such investment\nweights of lower diversi\ufb01cation among stocks within a portfolio function as a limitation to\nthe use of the portfolio theory in practical applications.\nAccording to the random matrix theory (RMT) recently derived from the \ufb01eld of econo-\nphysics to the \ufb01eld of \ufb01nance [6, 7], observed results exist which indicate that portfolio\nmanagement can be improved by controlling the correlation matrix, as an imp"
+        },
+        {
+          "paper_title": "Random matrix theory and nested clustered portfoli",
+          "section": "Introduction",
+          "page_number": 2,
+          "category": "q-fin.ST",
+          "relevance_score": -2.1664113998413086,
+          "chunk_text": "can be seen as generalizing the relationship between the univariate\nnormal and the chi-square distribution [4].\nWe are interested in applying the RMT techniques to improve the covariance matrix estimation involved\nin the portfolio optimization problem.\nThe modern portfolio theory of Markowitz [5] formulates the asset\nallocation problem as a quadratic optimization problem. A weakness of Markowitz\u2019s portfolio theory is that\nif the non-diagonal elements of the covariance matrix are not negligible, "
+        },
+        {
+          "paper_title": "The Effects of Market Properties on Portfolio Dive",
+          "section": "INTRODUCTION",
+          "page_number": 2,
+          "category": "q-fin.PM",
+          "relevance_score": -2.3877687454223633,
+          "chunk_text": "In the \ufb01eld of \ufb01nance, portfolio management is a crucial study topic, both from an\nacademic and a practical perspective. Markowitz\u2019s portfolio theory has had a signi\ufb01cant\nin\ufb02uence on portfolio research, in that it proposes a quantitative method for structuring\na portfolio with a minimum (maximum) risk (return) for a given return (risk) [1]. More-\nover, investment weights for stocks in a portfolio require well-distributed diversi\ufb01cation to\ne\ufb00ectively reduce the risk of a portfolio. Diversi\ufb01cation"
+        },
+        {
+          "paper_title": "Random matrix theory and nested clustered portfoli",
+          "section": "Introduction",
+          "page_number": 4,
+          "category": "q-fin.ST",
+          "relevance_score": -2.786257266998291,
+          "chunk_text": "= w\u2032\u03a3w.\n(15)\n3.1\nMarkowitz\nThe mean-variance allocation strategy of Markowitz [25] proposes to solve the following quadratic optimization\nproblem to minimize the portfolio risk at a given level of expected return\nmin\nw\u2208Rp\n1\n2w\u2032\u03a3w\n\u2212\u03b3w\u2032g \u2265G,\n(16)\nwhere \u03b3 is interpreted as the risk-aversion parameter. Hence, without considering any constraint on the weights\nand only assuming that the inverse of \u03a3 exists, the optimal portfolio is found to be\n\u02c6w = \u03b3\u03a3\u22121g\n(17)\nThe minimum risk associated with this opti"
+        }
+      ],
+      "evidence_chunks": [
+        {
+          "paper_title": "Random matrix theory and nested clustered portfoli",
+          "section": "Conclusion",
+          "page_number": 10,
+          "category": "q-fin.ST",
+          "relevance_score": -0.7947173118591309,
+          "chunk_text": "The asset allocation problem suffers from significant instability from the classical Markowitz perspective due to\nhighly correlated assets increase the condition number. A highly correlated portfolio is common during systemic\ncontagion events since they lead to co-movements within the financial markets. At the same time, we are subject\nto periods of structural changes in the financial markets derived from financial turmoil. Then, it is preferable\nto consider a relatively small number of records "
+        },
+        {
+          "paper_title": "The Effects of Market Properties on Portfolio Dive",
+          "section": "INTRODUCTION",
+          "page_number": 3,
+          "category": "q-fin.PM",
+          "relevance_score": -1.1727505922317505,
+          "chunk_text": "are con-\ncentrated on a few stocks\u2013that is to say, they are not well distributed. Such investment\nweights of lower diversi\ufb01cation among stocks within a portfolio function as a limitation to\nthe use of the portfolio theory in practical applications.\nAccording to the random matrix theory (RMT) recently derived from the \ufb01eld of econo-\nphysics to the \ufb01eld of \ufb01nance [6, 7], observed results exist which indicate that portfolio\nmanagement can be improved by controlling the correlation matrix, as an imp"
+        },
+        {
+          "paper_title": "Random matrix theory and nested clustered portfoli",
+          "section": "Introduction",
+          "page_number": 2,
+          "category": "q-fin.ST",
+          "relevance_score": -2.1664113998413086,
+          "chunk_text": "can be seen as generalizing the relationship between the univariate\nnormal and the chi-square distribution [4].\nWe are interested in applying the RMT techniques to improve the covariance matrix estimation involved\nin the portfolio optimization problem.\nThe modern portfolio theory of Markowitz [5] formulates the asset\nallocation problem as a quadratic optimization problem. A weakness of Markowitz\u2019s portfolio theory is that\nif the non-diagonal elements of the covariance matrix are not negligible, "
+        },
+        {
+          "paper_title": "The Effects of Market Properties on Portfolio Dive",
+          "section": "INTRODUCTION",
+          "page_number": 2,
+          "category": "q-fin.PM",
+          "relevance_score": -2.3877687454223633,
+          "chunk_text": "In the \ufb01eld of \ufb01nance, portfolio management is a crucial study topic, both from an\nacademic and a practical perspective. Markowitz\u2019s portfolio theory has had a signi\ufb01cant\nin\ufb02uence on portfolio research, in that it proposes a quantitative method for structuring\na portfolio with a minimum (maximum) risk (return) for a given return (risk) [1]. More-\nover, investment weights for stocks in a portfolio require well-distributed diversi\ufb01cation to\ne\ufb00ectively reduce the risk of a portfolio. Diversi\ufb01cation"
+        },
+        {
+          "paper_title": "Random matrix theory and nested clustered portfoli",
+          "section": "Introduction",
+          "page_number": 4,
+          "category": "q-fin.ST",
+          "relevance_score": -2.786257266998291,
+          "chunk_text": "= w\u2032\u03a3w.\n(15)\n3.1\nMarkowitz\nThe mean-variance allocation strategy of Markowitz [25] proposes to solve the following quadratic optimization\nproblem to minimize the portfolio risk at a given level of expected return\nmin\nw\u2208Rp\n1\n2w\u2032\u03a3w\n\u2212\u03b3w\u2032g \u2265G,\n(16)\nwhere \u03b3 is interpreted as the risk-aversion parameter. Hence, without considering any constraint on the weights\nand only assuming that the inverse of \u03a3 exists, the optimal portfolio is found to be\n\u02c6w = \u03b3\u03a3\u22121g\n(17)\nThe minimum risk associated with this opti"
+        }
+      ],
+      "trust_signals": {
+        "has_citations": true,
+        "citation_count": 5,
+        "missing_evidence": false,
+        "suggested_followup": ""
+      },
+      "timestamp": "2026-03-01T22:49:53.941483+00:00"
+    }
+  ]
+}

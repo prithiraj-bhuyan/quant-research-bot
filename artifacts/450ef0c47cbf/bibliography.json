@@ -1,0 +1,26 @@
+{
+  "thread_id": "450ef0c47cbf",
+  "thread_title": "Research 3/1/2026",
+  "artifact_type": "bibliography",
+  "total_sources": 3,
+  "sources": [
+    {
+      "source": "Random matrix theory and nested clustered portfolio",
+      "method": "The primary method used is Random Matrix Theory (RMT) to improve covariance matrix estimation in portfolio optimization. This approach generalizes the relationship between the univariate normal and the chi-square distribution.",
+      "limitations": "The Markowitz framework has limitations due to highly correlated assets, which increase the condition number and lead to instability in the asset allocation problem. Additionally, the framework assumes that the inverse of the covariance matrix exists, which may not always be the case.",
+      "why_it_matters": "This paper is relevant to the research question because it highlights the limitations of the Markowitz framework and proposes an alternative approach using RMT to improve portfolio optimization. It also discusses the impact of highly correlated assets on portfolio stability."
+    },
+    {
+      "source": "The Effects of Market Properties on Portfolio Diversification",
+      "method": "The primary method used is an analysis of market properties and their impact on portfolio diversification. The paper also references Random Matrix Theory (RMT) as a framework for understanding portfolio behavior.",
+      "limitations": "The paper notes that investment weights are often concentrated on a few stocks, leading to limitations in the practical application of portfolio theory. It also highlights the importance of considering market properties in portfolio management.",
+      "why_it_matters": "This paper is relevant to the research question because it discusses the limitations of traditional portfolio theory in practical applications and highlights the importance of considering market properties in portfolio management."
+    },
+    {
+      "source": "Markowitz\u2019s portfolio theory",
+      "method": "The primary method used is a quadratic optimization approach to minimize portfolio risk at a given level of expected return. The framework proposes to solve a quadratic optimization problem to optimize portfolio weights.",
+      "limitations": "The framework has limitations due to its assumptions, such as the existence of the inverse of the covariance matrix, and its sensitivity to highly correlated assets. It also assumes that investors have a quadratic utility function.",
+      "why_it_matters": "This paper is relevant to the research question because it is a foundational work on portfolio theory and its limitations have been widely discussed in the literature. Understanding these limitations is essential for developing more robust portfolio optimization approaches."
+    }
+  ]
+}

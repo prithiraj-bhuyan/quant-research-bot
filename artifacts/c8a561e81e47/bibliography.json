@@ -1,0 +1,50 @@
+{
+  "thread_id": "c8a561e81e47",
+  "thread_title": "Demo 2",
+  "artifact_type": "bibliography",
+  "total_sources": 7,
+  "sources": [
+    {
+      "source": "Singular Perturbation Expansion for Utility Maximization",
+      "method": "The authors use a singular perturbation expansion to solve the asymptotically-singular Hamilton-Jacobi-Bellman equation that arises from portfolio optimization with small, instantaneous, quadratic transaction costs. This approach allows for an expansion of the solution in powers of the square root of the transaction cost coefficient.",
+      "limitations": "The method assumes that the transaction costs are small and instantaneous, which may not be realistic in all scenarios. Additionally, the expansion is only valid for small values of the transaction cost coefficient.",
+      "why_it_matters": "This paper is relevant to the research question because it provides a framework for analyzing the impact of transaction costs on optimal portfolio rebalancing. The singular perturbation expansion allows for a detailed analysis of the effects of small transaction costs on the optimal portfolio."
+    },
+    {
+      "source": "Liquidity Stress Testing in Asset Management",
+      "method": "The authors use an optimization problem to determine the optimal portfolio liquidation strategy, taking into account the tracking error and liquidation costs. The optimization problem is solved using a quadratic programming approach.",
+      "limitations": "The method assumes that the liquidation costs and tracking error can be accurately modeled, which may not be the case in practice. Additionally, the optimization problem may not be convex, which could lead to multiple local optima.",
+      "why_it_matters": "This paper is relevant to the research question because it provides a framework for analyzing the impact of liquidity costs on optimal portfolio rebalancing. The optimization problem allows for a detailed analysis of the trade-off between tracking error and liquidation costs."
+    },
+    {
+      "source": "Optimal execution of portfolio transactions",
+      "method": "The authors use a dynamic programming approach to determine the optimal execution strategy for a portfolio of assets, taking into account the impact of trading on market prices. The approach involves solving a stochastic control problem.",
+      "limitations": "The method assumes that the market impact of trading can be accurately modeled, which may not be the case in practice. Additionally, the dynamic programming approach can be computationally intensive.",
+      "why_it_matters": "This paper is relevant to the research question because it provides a framework for analyzing the impact of transaction costs on optimal portfolio rebalancing. The dynamic programming approach allows for a detailed analysis of the optimal execution strategy."
+    },
+    {
+      "source": "Hedging and portfolio optimization in financial markets with a large trader",
+      "method": "The authors use a stochastic control approach to determine the optimal hedging and portfolio optimization strategy for a large trader, taking into account the impact of trading on market prices. The approach involves solving a stochastic differential equation.",
+      "limitations": "The method assumes that the market impact of trading can be accurately modeled, which may not be the case in practice. Additionally, the stochastic control approach can be computationally intensive.",
+      "why_it_matters": "This paper is relevant to the research question because it provides a framework for analyzing the impact of transaction costs on optimal portfolio rebalancing. The stochastic control approach allows for a detailed analysis of the optimal hedging and portfolio optimization strategy."
+    },
+    {
+      "source": "Hedging with temporary price impact",
+      "method": "The authors use a stochastic control approach to determine the optimal hedging strategy for a portfolio of assets, taking into account the temporary price impact of trading. The approach involves solving a stochastic differential equation.",
+      "limitations": "The method assumes that the temporary price impact can be accurately modeled, which may not be the case in practice. Additionally, the stochastic control approach can be computationally intensive.",
+      "why_it_matters": "This paper is relevant to the research question because it provides a framework for analyzing the impact of transaction costs on optimal portfolio rebalancing. The stochastic control approach allows for a detailed analysis of the optimal hedging strategy."
+    },
+    {
+      "source": "Automated Market Making and Loss-Versus-Rebalancing",
+      "method": "The authors use a simulation-based approach to compare the performance of different rebalancing strategies, including a buy-and-hold strategy and a rebalancing strategy that takes into account the impact of trading on market prices.",
+      "limitations": "The method assumes that the simulation parameters are accurately calibrated, which may not be the case in practice. Additionally, the simulation-based approach can be computationally intensive.",
+      "why_it_matters": "This paper is relevant to the research question because it provides a framework for analyzing the impact of transaction costs on optimal portfolio rebalancing. The simulation-based approach allows for a detailed analysis of the performance of different rebalancing strategies."
+    },
+    {
+      "source": "Linear quadratic stochastic control",
+      "method": "The authors use a linear quadratic stochastic control approach to determine the optimal control strategy for a stochastic system, taking into account the impact of control actions on the system's dynamics. The approach involves solving a Riccati equation.",
+      "limitations": "The method assumes that the system's dynamics can be accurately modeled, which may not be the case in practice. Additionally, the linear quadratic stochastic control approach can be computationally intensive.",
+      "why_it_matters": "This paper is relevant to the research question because it provides a framework for analyzing the impact of transaction costs on optimal portfolio rebalancing. The linear quadratic stochastic control approach allows for a detailed analysis of the optimal control strategy."
+    }
+  ]
+}

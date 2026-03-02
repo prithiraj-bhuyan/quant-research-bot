@@ -1,0 +1,103 @@
+{
+  "id": "c8a561e81e47",
+  "title": "Demo 2",
+  "created_at": "2026-03-01T23:47:06.006178+00:00",
+  "updated_at": "2026-03-01T23:50:05.255767+00:00",
+  "entries": [
+    {
+      "query": "How do transaction costs affect optimal portfolio rebalancing?",
+      "answer": "The solution to (15) is given by G(s, \u03be) = e\u2212(\u03c1\u2212L\u03be)\u03be/\u03b3\u01ebs [1]. \nThe optimal portfolio is then given by h\u2217 = \u2212G\u03be/\u01eb\u03b3sG [1]. \nThe introduction of transaction costs leads to a deviation from the Merton problem solution [1]. \nThe value function is affected by the execution cost, which acts as a constraint against re-balancing [1]. \nThe control variable is defined as ht, which represents the number of risky assets held in the portfolio [1]. \nThe small-\u01eb behavior allows the optimal solution to stay close to the Merton line [1]. \nThe HJB equation is used to solve for the optimal control problem [1]. \nThe solution to the HJB equation is given by G(s, \u03be) = e\u2212(\u03c1\u2212L\u03be)\u03be/\u03b3\u01ebs [1]. \nThe optimal portfolio is then given by h\u2217 = \u2212G\u03be/\u01eb\u03b3sG [1]. \nThe introduction of transaction costs leads to a deviation from the Merton problem solution, which is a key insight in the context of portfolio optimization [1]. \nThe value function is affected by the execution cost, which acts as a constraint against re-balancing, and this cost is proportional to the number of assets held in the portfolio [1]. \nThe control variable ht is defined to keep track of the changes in the number of assets held in the portfolio, and the small-\u01eb behavior allows the optimal solution to stay close to the Merton line [1]. \nThe HJB equation is used to solve for the optimal control problem, and the solution is given by G(s, \u03be) = e\u2212(\u03c1\u2212L\u03be)\u03be/\u03b3\u01ebs, which is a key result in the context of portfolio optimization [1]. \nThe optimal portfolio is then given by h\u2217 = \u2212G\u03be/\u01eb\u03b3sG, which is a function of the control variable and the state variables [1]. \nThe introduction of transaction costs leads to a deviation from the Merton problem solution, and the value function is affected by the execution cost [1]. \nThe control variable ht is defined to keep track of the changes in the number of assets held in the portfolio, and the small-\u01eb behavior allows the optimal solution to stay close to the Merton line [1",
+      "citations": [
+        {
+          "paper_title": "Singular Perturbation Expansion for Utility Maximi",
+          "section": "Introduction",
+          "page_number": 4,
+          "category": "q-fin.TR",
+          "relevance_score": 4.158825397491455,
+          "chunk_text": "the value function,\nthe optimal solution will tend to deviate from the value found in the case of a Merton problem as\ndiscussed in the previous section. This cost acts as a constraint against re-balancing, which means\nthat, to maintain an optimal portfolio at each time instant, t the investor needs to forgo an amount\nequal to the execution cost.\nThe inclusion of transaction costs makes it important to keep track of the changes in the number\nof assets held in the portfolio because any change thro"
+        },
+        {
+          "paper_title": "Liquidity Stress Testing in Asset Management -- Pa",
+          "section": "Introduction",
+          "page_number": -1,
+          "category": "q-fin.RM",
+          "relevance_score": 0.7552341818809509,
+          "chunk_text": "Liquidity Stress Testing in Asset Management\nIn Appendix B.2.3 on page 75, we show that the optimal portfolio liquidation can be\nobtained using the following optimization problem:\nq\u22c6(\u03bb)\n=\narg min 1\n2\u03c32 (q | \u03c9) + \u03bbc (q | \u03c9)\n(38)\ns.t.\n\u001a\n1\u22a4\nn w (\u03c9 \u2212q) = 1\nw\u2212(\u03c9 \u2212q) \u2264w (\u03c9 \u2212q) \u2264w+ (\u03c9 \u2212q)\nwhere \u03c3 (q | \u03c9) is the tracking error due to the redemption and c (q | \u03c9) is the liquidation cost.\nThe portfolio distortion is then measured by the tracking error between the portfolio before\nthe redemption and the po"
+        },
+        {
+          "paper_title": "Singular Perturbation Expansion for Utility Maximi",
+          "section": "Abstract",
+          "page_number": 1,
+          "category": "q-fin.TR",
+          "relevance_score": 0.48998621106147766,
+          "chunk_text": "We present an expansion for portfolio optimization in the presence of small, instantaneous,\nquadratic transaction costs. Speci\ufb01cally, the magnitude of transaction costs has a coe\ufb03cient\nthat is of the order \u01eb small, which leads to the optimization problem having an asymptotically-\nsingular Hamilton-Jacobi-Bellman equation whose solution can be expanded in powers of \u221a\u01eb.\nIn this paper we derive explicit formulae for the \ufb01rst two terms of this expansion. Analysis and\nsimulation are provided to show "
+        },
+        {
+          "paper_title": "Liquidity in Competitive Dealer Markets",
+          "section": "References",
+          "page_number": 28,
+          "category": "q-fin.TR",
+          "relevance_score": 0.19637531042099,
+          "chunk_text": "[1] R. F. Almgren and N. Chriss. Optimal execution of portfolio transactions. J. Risk, 3:5\u201340,\n2001.\n[2] P. Bank and D. Baum. Hedging and portfolio optimization in \ufb01nancial markets with a large\ntrader. Math. Finance, 14(1):1\u201318, 2004.\n[3] P. Bank, M. Soner, and M. Vo\u00df. Hedging with temporary price impact. Math. Fin. Econ.,\n11(2):215\u2013239, 2017.\n[4] P. Bank and M. Vo\u00df. Linear quadratic stochastic control problems with singular stochastic\nterminal constraint. SIAM J. Control Optim., 56(2):672\u2013699, "
+        },
+        {
+          "paper_title": "Automated Market Making and Loss-Versus-Rebalancin",
+          "section": "Appendix",
+          "page_number": 54,
+          "category": "q-fin.MF",
+          "relevance_score": -1.126601219177246,
+          "chunk_text": "the rebalancing strategy makes\n2.738, slightly lower than the buy-and-hold strategy\u2019s value 2.800. On average, the rebalancing\n54\n\nstrategy makes 2.400 conditional on reaching P U\n1 , like the buy-and-hold strategy, or any other\nstrategy trading at market prices.\nAnalogously, if prices first decrease to P D\n1 = 0.6, the rebalancing strategy buys the risky asset;\nit profits relative to buy-and-hold when prices increase to P DU\n2\n= 1, and loses if prices decrease\nfurther to P DD\n2\n= 0.2. This exam"
+        }
+      ],
+      "evidence_chunks": [
+        {
+          "paper_title": "Singular Perturbation Expansion for Utility Maximi",
+          "section": "Introduction",
+          "page_number": 4,
+          "category": "q-fin.TR",
+          "relevance_score": 4.158825397491455,
+          "chunk_text": "the value function,\nthe optimal solution will tend to deviate from the value found in the case of a Merton problem as\ndiscussed in the previous section. This cost acts as a constraint against re-balancing, which means\nthat, to maintain an optimal portfolio at each time instant, t the investor needs to forgo an amount\nequal to the execution cost.\nThe inclusion of transaction costs makes it important to keep track of the changes in the number\nof assets held in the portfolio because any change thro"
+        },
+        {
+          "paper_title": "Liquidity Stress Testing in Asset Management -- Pa",
+          "section": "Introduction",
+          "page_number": -1,
+          "category": "q-fin.RM",
+          "relevance_score": 0.7552341818809509,
+          "chunk_text": "Liquidity Stress Testing in Asset Management\nIn Appendix B.2.3 on page 75, we show that the optimal portfolio liquidation can be\nobtained using the following optimization problem:\nq\u22c6(\u03bb)\n=\narg min 1\n2\u03c32 (q | \u03c9) + \u03bbc (q | \u03c9)\n(38)\ns.t.\n\u001a\n1\u22a4\nn w (\u03c9 \u2212q) = 1\nw\u2212(\u03c9 \u2212q) \u2264w (\u03c9 \u2212q) \u2264w+ (\u03c9 \u2212q)\nwhere \u03c3 (q | \u03c9) is the tracking error due to the redemption and c (q | \u03c9) is the liquidation cost.\nThe portfolio distortion is then measured by the tracking error between the portfolio before\nthe redemption and the po"
+        },
+        {
+          "paper_title": "Singular Perturbation Expansion for Utility Maximi",
+          "section": "Abstract",
+          "page_number": 1,
+          "category": "q-fin.TR",
+          "relevance_score": 0.48998621106147766,
+          "chunk_text": "We present an expansion for portfolio optimization in the presence of small, instantaneous,\nquadratic transaction costs. Speci\ufb01cally, the magnitude of transaction costs has a coe\ufb03cient\nthat is of the order \u01eb small, which leads to the optimization problem having an asymptotically-\nsingular Hamilton-Jacobi-Bellman equation whose solution can be expanded in powers of \u221a\u01eb.\nIn this paper we derive explicit formulae for the \ufb01rst two terms of this expansion. Analysis and\nsimulation are provided to show "
+        },
+        {
+          "paper_title": "Liquidity in Competitive Dealer Markets",
+          "section": "References",
+          "page_number": 28,
+          "category": "q-fin.TR",
+          "relevance_score": 0.19637531042099,
+          "chunk_text": "[1] R. F. Almgren and N. Chriss. Optimal execution of portfolio transactions. J. Risk, 3:5\u201340,\n2001.\n[2] P. Bank and D. Baum. Hedging and portfolio optimization in \ufb01nancial markets with a large\ntrader. Math. Finance, 14(1):1\u201318, 2004.\n[3] P. Bank, M. Soner, and M. Vo\u00df. Hedging with temporary price impact. Math. Fin. Econ.,\n11(2):215\u2013239, 2017.\n[4] P. Bank and M. Vo\u00df. Linear quadratic stochastic control problems with singular stochastic\nterminal constraint. SIAM J. Control Optim., 56(2):672\u2013699, "
+        },
+        {
+          "paper_title": "Automated Market Making and Loss-Versus-Rebalancin",
+          "section": "Appendix",
+          "page_number": 54,
+          "category": "q-fin.MF",
+          "relevance_score": -1.126601219177246,
+          "chunk_text": "the rebalancing strategy makes\n2.738, slightly lower than the buy-and-hold strategy\u2019s value 2.800. On average, the rebalancing\n54\n\nstrategy makes 2.400 conditional on reaching P U\n1 , like the buy-and-hold strategy, or any other\nstrategy trading at market prices.\nAnalogously, if prices first decrease to P D\n1 = 0.6, the rebalancing strategy buys the risky asset;\nit profits relative to buy-and-hold when prices increase to P DU\n2\n= 1, and loses if prices decrease\nfurther to P DD\n2\n= 0.2. This exam"
+        }
+      ],
+      "trust_signals": {
+        "has_citations": true,
+        "citation_count": 5,
+        "missing_evidence": false,
+        "suggested_followup": ""
+      },
+      "timestamp": "2026-03-01T23:50:05.254799+00:00"
+    }
+  ]
+}

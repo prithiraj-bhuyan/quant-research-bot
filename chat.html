@@ -1,323 +1,1555 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quant Finance Research Portal</title>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Courier New', monospace; background: #0a0a0a; color: #e0e0e0; height: 100vh; display: flex; flex-direction: column; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quant Finance Research Portal</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
-  /* Header */
-  .header { padding: 12px 20px; background: #111; border-bottom: 1px solid #333; display: flex; align-items: center; justify-content: space-between; }
-  .header h1 { font-size: 14px; color: #00ff88; letter-spacing: 1px; }
-  .header .status { font-size: 11px; color: #666; }
-  .header .status.online { color: #00ff88; }
+    :root {
+      --bg-primary: #0a0b0f;
+      --bg-secondary: #11131a;
+      --bg-tertiary: #181b25;
+      --bg-card: #1a1d28;
+      --bg-hover: #22263a;
+      --border: #2a2e3d;
+      --border-focus: #00e87b;
+      --accent: #00e87b;
+      --accent-dim: #00c966;
+      --accent-glow: rgba(0, 232, 123, 0.15);
+      --accent-2: #6c5ce7;
+      --accent-3: #00b4d8;
+      --text-primary: #e8eaf0;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+      --warning: #fbbf24;
+      --error: #ef4444;
+      --success: #00e87b;
+    }
 
-  /* Sidebar toggle */
-  .layout { display: flex; flex: 1; overflow: hidden; }
-  .sidebar { width: 260px; background: #0f0f0f; border-right: 1px solid #222; padding: 12px; overflow-y: auto; font-size: 12px; }
-  .sidebar h3 { color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-  .sidebar label { display: block; margin: 6px 0 2px; color: #aaa; }
-  .sidebar input, .sidebar select { width: 100%; padding: 6px; background: #1a1a1a; border: 1px solid #333; color: #e0e0e0; font-family: inherit; font-size: 12px; margin-bottom: 4px; }
-  .sidebar button { width: 100%; padding: 8px; margin-top: 8px; background: #1a1a1a; border: 1px solid #333; color: #00ff88; cursor: pointer; font-family: inherit; font-size: 12px; }
-  .sidebar button:hover { background: #222; }
-  .sidebar .info { color: #555; font-size: 10px; margin-top: 4px; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  /* Chat area */
-  .chat-area { flex: 1; display: flex; flex-direction: column; }
-  .messages { flex: 1; overflow-y: auto; padding: 16px; }
-  .msg { margin-bottom: 16px; max-width: 85%; }
-  .msg.user { margin-left: auto; }
-  .msg.assistant { margin-right: auto; }
-  .msg .bubble { padding: 10px 14px; border-radius: 4px; font-size: 13px; line-height: 1.6; white-space: pre-wrap; word-wrap: break-word; }
-  .msg.user .bubble { background: #1a2a1a; border: 1px solid #2a4a2a; color: #c0e0c0; }
-  .msg.assistant .bubble { background: #1a1a1a; border: 1px solid #2a2a2a; }
-  .msg .meta { font-size: 10px; color: #555; margin-top: 4px; padding: 0 4px; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
 
-  /* Citations */
-  .citations { margin-top: 8px; padding-top: 8px; border-top: 1px solid #222; }
-  .citation { font-size: 11px; color: #888; padding: 3px 0; display: flex; gap: 8px; }
-  .citation .num { color: #00ff88; min-width: 20px; }
-  .citation .detail { color: #666; }
+    /* ── Header ───────────────────────────────────────────── */
+    .header {
+      padding: 10px 20px;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 100;
+    }
 
-  /* Timings */
-  .timings { font-size: 10px; color: #444; margin-top: 6px; }
-  .timings span { margin-right: 12px; }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-  /* Input */
-  .input-area { padding: 12px 16px; background: #0f0f0f; border-top: 1px solid #222; display: flex; gap: 8px; }
-  .input-area input { flex: 1; padding: 10px 14px; background: #1a1a1a; border: 1px solid #333; color: #e0e0e0; font-family: inherit; font-size: 13px; outline: none; }
-  .input-area input:focus { border-color: #00ff88; }
-  .input-area button { padding: 10px 20px; background: #00ff88; color: #000; border: none; cursor: pointer; font-family: inherit; font-weight: bold; font-size: 13px; }
-  .input-area button:disabled { background: #333; color: #666; cursor: not-allowed; }
+    .header h1 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
 
-  /* Loading */
-  .loading { display: inline-block; }
-  .loading::after { content: ''; animation: dots 1.5s infinite; }
-  @keyframes dots { 0% { content: '.'; } 33% { content: '..'; } 66% { content: '...'; } }
-</style>
+    .header .version {
+      font-size: 10px;
+      color: var(--text-muted);
+      background: var(--bg-tertiary);
+      padding: 2px 8px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .status-badge {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .status-badge.online {
+      background: var(--accent-glow);
+      color: var(--accent);
+      border: 1px solid rgba(0, 232, 123, 0.3);
+    }
+
+    .status-badge.offline {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--error);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .tab-bar {
+      display: flex;
+      gap: 2px;
+    }
+
+    .tab-btn {
+      padding: 6px 14px;
+      font-size: 11px;
+      font-weight: 500;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: 6px;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-primary);
+      background: var(--bg-tertiary);
+    }
+
+    .tab-btn.active {
+      color: var(--accent);
+      background: var(--accent-glow);
+      border-color: rgba(0, 232, 123, 0.2);
+    }
+
+    /* ── Layout ───────────────────────────────────────────── */
+    .layout {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* ── Sidebar ──────────────────────────────────────────── */
+    .sidebar {
+      width: 280px;
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sidebar-section {
+      padding: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-section h3 {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .threads-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px;
+    }
+
+    .thread-item {
+      padding: 10px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 4px;
+      transition: all 0.15s;
+      border: 1px solid transparent;
+    }
+
+    .thread-item:hover {
+      background: var(--bg-hover);
+    }
+
+    .thread-item.active {
+      background: var(--accent-glow);
+      border-color: rgba(0, 232, 123, 0.2);
+    }
+
+    .thread-item .thread-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .thread-item .thread-meta {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      font-family: inherit;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 1px solid var(--border);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-dim);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-secondary);
+    }
+
+    .btn-ghost:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    .btn-sm {
+      padding: 5px 10px;
+      font-size: 11px;
+      width: auto;
+    }
+
+    .sidebar-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 7px 10px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 12px;
+      border-radius: 6px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .input-field:focus {
+      border-color: var(--accent);
+    }
+
+    .input-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .info-text {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* ── Main area ────────────────────────────────────────── */
+    .main-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ── Chat view ────────────────────────────────────────── */
+    .chat-view {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      scroll-behavior: smooth;
+    }
+
+    .msg {
+      margin-bottom: 20px;
+      max-width: 88%;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .msg.user {
+      margin-left: auto;
+    }
+
+    .msg.assistant {
+      margin-right: auto;
+    }
+
+    .msg .bubble {
+      padding: 14px 18px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .msg.user .bubble {
+      background: linear-gradient(135deg, #1a2a1a, #1e3320);
+      border: 1px solid #2a4a2a;
+      color: #c0e0c0;
+      border-radius: 12px 12px 4px 12px;
+    }
+
+    .msg.assistant .bubble {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px 12px 12px 4px;
+    }
+
+    /* Trust signal banner */
+    .trust-banner {
+      margin-top: 10px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      line-height: 1.5;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .trust-banner.warning {
+      background: rgba(251, 191, 36, 0.08);
+      border: 1px solid rgba(251, 191, 36, 0.2);
+      color: var(--warning);
+    }
+
+    .trust-banner .trust-icon {
+      font-size: 14px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .trust-banner .followup-query {
+      display: inline-block;
+      background: var(--bg-tertiary);
+      padding: 3px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--accent);
+      border: 1px solid var(--border);
+      margin-top: 4px;
+      transition: background 0.2s;
+    }
+
+    .trust-banner .followup-query:hover {
+      background: var(--bg-hover);
+    }
+
+    /* Citations */
+    .citations-block {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+
+    .citations-block .cite-header {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .citation-card {
+      padding: 8px 12px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 6px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      font-size: 12px;
+      transition: border-color 0.2s;
+    }
+
+    .citation-card:hover {
+      border-color: var(--accent);
+    }
+
+    .citation-num {
+      font-weight: 700;
+      color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      min-width: 24px;
+    }
+
+    .citation-title {
+      color: var(--text-primary);
+      font-weight: 500;
+      flex: 1;
+    }
+
+    .citation-meta {
+      color: var(--text-muted);
+      font-size: 10px;
+      white-space: nowrap;
+    }
+
+    .score-bar {
+      width: 40px;
+      height: 4px;
+      background: var(--bg-primary);
+      border-radius: 2px;
+      overflow: hidden;
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 4px;
+    }
+
+    .score-bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width 0.3s;
+    }
+
+    /* Timings */
+    .timings-bar {
+      display: flex;
+      gap: 16px;
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 8px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .timings-bar span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Input area */
+    .input-area {
+      padding: 16px 20px;
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .input-area input {
+      flex: 1;
+      padding: 12px 16px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 13px;
+      outline: none;
+      border-radius: 10px;
+      transition: border-color 0.2s;
+    }
+
+    .input-area input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .input-area input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .send-btn {
+      padding: 12px 24px;
+      background: var(--accent);
+      color: #000;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 13px;
+      border-radius: 10px;
+      transition: all 0.2s;
+      letter-spacing: 0.5px;
+    }
+
+    .send-btn:hover {
+      background: var(--accent-dim);
+      transform: translateY(-1px);
+    }
+
+    .send-btn:disabled {
+      background: var(--bg-tertiary);
+      color: var(--text-muted);
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Loading */
+    .loading-indicator {
+      display: inline-flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .loading-indicator .dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 1.4s infinite ease-in-out;
+    }
+
+    .loading-indicator .dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .loading-indicator .dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      80%,
+      100% {
+        opacity: 0.3;
+        transform: scale(0.8);
+      }
+
+      40% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* ── Eval Dashboard ──────────────────────────────────── */
+    .eval-view {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+      display: none;
+    }
+
+    .eval-view.active {
+      display: block;
+    }
+
+    .metric-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+
+    .metric-card:hover {
+      border-color: var(--accent);
+    }
+
+    .metric-card .metric-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .metric-card .metric-value {
+      font-size: 32px;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .metric-card .metric-bar {
+      width: 100%;
+      height: 6px;
+      background: var(--bg-primary);
+      border-radius: 3px;
+      margin-top: 12px;
+      overflow: hidden;
+    }
+
+    .metric-card .metric-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.5s;
+    }
+
+    .color-green {
+      color: var(--accent);
+    }
+
+    .color-blue {
+      color: var(--accent-3);
+    }
+
+    .color-purple {
+      color: var(--accent-2);
+    }
+
+    .fill-green {
+      background: var(--accent);
+    }
+
+    .fill-blue {
+      background: var(--accent-3);
+    }
+
+    .fill-purple {
+      background: var(--accent-2);
+    }
+
+    .perf-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .perf-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .perf-card .perf-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .perf-card .perf-value {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-top: 4px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .examples-section {
+      margin-top: 24px;
+    }
+
+    .examples-section h3 {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .example-row {
+      display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 6px;
+      font-size: 12px;
+      gap: 12px;
+    }
+
+    .example-query {
+      flex: 1;
+      color: var(--text-primary);
+    }
+
+    .example-score {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent);
+      font-weight: 600;
+      min-width: 50px;
+      text-align: right;
+    }
+
+    /* ── Artifact panel ──────────────────────────────────── */
+    .artifact-panel {
+      width: 340px;
+      background: var(--bg-secondary);
+      border-left: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 16px;
+      display: block;
+    }
+
+    .artifact-panel h3 {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .artifact-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .artifact-result {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 12px;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .artifact-result h4 {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .artifact-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+    }
+
+    .artifact-table th {
+      text-align: left;
+      padding: 6px 8px;
+      background: var(--bg-tertiary);
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 9px;
+      letter-spacing: 0.5px;
+    }
+
+    .artifact-table td {
+      padding: 6px 8px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+
+    .export-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .conf-badge {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .conf-high {
+      background: rgba(0, 232, 123, 0.1);
+      color: var(--accent);
+    }
+
+    .conf-medium {
+      background: rgba(251, 191, 36, 0.1);
+      color: var(--warning);
+    }
+
+    .conf-low {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--error);
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+
+    /* Utility */
+    .hidden {
+      display: none !important;
+    }
+
+    .gap-6 {
+      gap: 6px;
+    }
+
+    .mt-8 {
+      margin-top: 8px;
+    }
+
+    .flex {
+      display: flex;
+    }
+
+    /* KaTeX overrides */
+    .katex-display {
+      margin: 12px 0;
+      overflow-x: auto;
+    }
+
+    .katex {
+      font-size: 1.05em;
+    }
+
+    .math-block {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin: 10px 0;
+      overflow-x: auto;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    crossorigin="anonymous"></script>
 </head>
+
 <body>
 
-<div class="header">
-  <h1>▲ QUANT FINANCE RESEARCH PORTAL</h1>
-  <div class="status" id="statusIndicator">checking…</div>
-</div>
-
-<div class="layout">
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <h3>⚙ Settings</h3>
-
-    <label>Top-K Results</label>
-    <input type="number" id="topK" value="5" min="1" max="20">
-
-    <label>Use Reranker</label>
-    <select id="useReranker">
-      <option value="true" selected>Yes (cross-encoder)</option>
-      <option value="false">No (faster)</option>
-    </select>
-
-    <h3 style="margin-top: 16px;">📥 Papers</h3>
-    <label>Fetch from arXiv</label>
-    <input type="number" id="fetchCount" value="20" min="1" max="100">
-    <button onclick="fetchPapers()">Fetch Papers</button>
-
-    <h3 style="margin-top: 16px;">🔧 Index</h3>
-    <button onclick="buildIndex(false)">Build / Update Index</button>
-    <button onclick="buildIndex(true)">Full Rebuild</button>
-    <button onclick="checkBuildStatus()">Check Build Status</button>
-    <div class="info" id="buildInfo">—</div>
-
-    <h3 style="margin-top: 16px;">🧪 Evaluation</h3>
-    <button onclick="runEval()">Run Eval (20 queries)</button>
-    <button onclick="getEvalReport()">View Report</button>
-    <div class="info" id="evalInfo">—</div>
+  <!-- ── Header ──────────────────────────────────────────── -->
+  <div class="header">
+    <div class="header-left">
+      <h1>▲ Quant Research Portal</h1>
+      <span class="version">v3.0</span>
+    </div>
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchView('chat')">💬 Chat</button>
+      <button class="tab-btn" onclick="switchView('eval')">📊 Evaluation</button>
+    </div>
+    <div class="header-right">
+      <div class="status-badge offline" id="statusBadge">checking…</div>
+    </div>
   </div>
 
-  <!-- Chat -->
-  <div class="chat-area">
-    <div class="messages" id="messages">
-      <div class="msg assistant">
-        <div class="bubble">Ready. Ask me anything about quantitative finance research.
-Type a question to search across your paper corpus with hybrid retrieval + reranking.</div>
+  <!-- ── Main layout ─────────────────────────────────────── -->
+  <div class="layout">
+
+    <!-- Sidebar: Threads + Settings -->
+    <div class="sidebar">
+      <div class="sidebar-section">
+        <h3>📂 Research Threads</h3>
+        <div class="sidebar-actions">
+          <button class="btn btn-primary" onclick="createThread()">+ New Thread</button>
+        </div>
+      </div>
+      <div class="threads-list" id="threadsList">
+        <!-- populated dynamically -->
+      </div>
+
+      <div class="sidebar-section">
+        <h3>⚙ Settings</h3>
+        <label class="input-label">Top-K Results</label>
+        <input class="input-field" type="number" id="topK" value="5" min="1" max="20">
+        <label class="input-label" style="margin-top:8px;">Reranker</label>
+        <select class="input-field" id="useReranker">
+          <option value="true" selected>Cross-encoder (precise)</option>
+          <option value="false">Skip (faster)</option>
+        </select>
+      </div>
+
+      <div class="sidebar-section">
+        <h3>📥 Papers / Index</h3>
+        <div class="sidebar-actions">
+          <div class="flex gap-6">
+            <input class="input-field" type="number" id="fetchCount" value="20" min="1" max="100" style="width:70px;">
+            <button class="btn btn-ghost btn-sm" style="flex:1;" onclick="fetchPapers()">Fetch Papers</button>
+          </div>
+          <button class="btn btn-ghost" onclick="buildIndex(false)">Build / Update Index</button>
+          <button class="btn btn-ghost" onclick="buildIndex(true)">Full Rebuild</button>
+        </div>
+        <div class="info-text" id="buildInfo">—</div>
       </div>
     </div>
 
-    <div class="input-area">
-      <input type="text" id="queryInput" placeholder="Ask about portfolio optimization, risk measures, pricing models…"
-             onkeydown="if(event.key==='Enter') sendMessage()">
-      <button id="sendBtn" onclick="sendMessage()">ASK</button>
+    <!-- Main content area -->
+    <div class="main-area">
+
+      <!-- Chat View -->
+      <div class="chat-view" id="chatView">
+        <div class="messages" id="messages">
+          <div class="msg assistant">
+            <div class="bubble">Ready. Ask me anything about quantitative finance research.
+            </div>
+          </div>
+        </div>
+
+        <div class="input-area">
+          <input type="text" id="queryInput"
+            placeholder="Ask about portfolio optimization, risk measures, factor models…"
+            onkeydown="if(event.key==='Enter') sendMessage()">
+          <button class="send-btn" id="sendBtn" onclick="sendMessage()">ASK</button>
+        </div>
+      </div>
+
+      <!-- Eval Dashboard View -->
+      <div class="eval-view" id="evalView">
+        <div id="evalContent">
+          <div style="text-align:center; padding:60px; color:var(--text-muted);">
+            <p style="font-size:16px; margin-bottom:12px;">No evaluation report loaded</p>
+            <button class="btn btn-primary" style="width:auto; padding:10px 24px;" onclick="loadEvalDashboard()">Load
+              Report</button>
+            <button class="btn btn-ghost" style="width:auto; padding:10px 24px; margin-left:8px;"
+              onclick="runEval()">Run New Evaluation</button>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- Artifact panel (right side) -->
+    <div class="artifact-panel" id="artifactPanel">
+      <h3>🧪 Research Artifacts</h3>
+      <div class="artifact-actions">
+        <button class="btn btn-ghost" onclick="generateArtifact('evidenceTable')">📋 Evidence Table</button>
+        <button class="btn btn-ghost" onclick="generateArtifact('bibliography')">📚 Annotated Bibliography</button>
+        <button class="btn btn-ghost" onclick="generateArtifact('synthesisMemo')">📝 Synthesis Memo</button>
+      </div>
+      <div id="artifactResults"></div>
+    </div>
+
   </div>
-</div>
 
-<script>
-const API = '';  // same origin
-let conversationHistory = [];
+  <script>
+    const API = '';
+    let conversationHistory = [];
+    let activeThreadId = null;
 
-// ── Check index status on load ────────────────────────────────
-async function checkStatus() {
-  try {
-    const r = await fetch(`${API}/indexStatus`);
-    const d = await r.json();
-    const el = document.getElementById('statusIndicator');
-    if (d.config) {
-      el.textContent = `INDEX: ${d.config.total_vectors} vectors | ${d.config.model_name}`;
-      el.className = 'status online';
-    } else {
-      el.textContent = 'NO INDEX — build one first';
-      el.className = 'status';
-    }
-  } catch { document.getElementById('statusIndicator').textContent = 'API offline'; }
-}
-checkStatus();
+    // ═══════════════════════════════════════════════════════════════════
+    // INIT
+    // ═══════════════════════════════════════════════════════════════════
 
-// ── Chat ──────────────────────────────────────────────────────
-async function sendMessage() {
-  const input = document.getElementById('queryInput');
-  const query = input.value.trim();
-  if (!query) return;
-
-  input.value = '';
-  document.getElementById('sendBtn').disabled = true;
-
-  // Add user message
-  addMessage('user', query);
-
-  // Add loading
-  const loadingId = addMessage('assistant', '<span class="loading">Searching & generating</span>', true);
-
-  const topK = parseInt(document.getElementById('topK').value) || 5;
-  const useReranker = document.getElementById('useReranker').value === 'true';
-
-  try {
-    const r = await fetch(`${API}/chat`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        query,
-        conversation_history: conversationHistory.slice(-6),
-        top_k: topK,
-        use_reranker: useReranker,
-      }),
-    });
-    const d = await r.json();
-
-    // Remove loading
-    document.getElementById(loadingId)?.remove();
-
-    // Build citations HTML
-    let citationsHtml = '';
-    if (d.citations && d.citations.length) {
-      citationsHtml = '<div class="citations">';
-      d.citations.forEach((c, i) => {
-        const page = c.page_number > 0 ? `p.${c.page_number}` : '';
-        citationsHtml += `<div class="citation">
-          <span class="num">[${i+1}]</span>
-          <span>${c.paper_title}</span>
-          <span class="detail">§${c.section} ${page} (${c.category})</span>
-        </div>`;
-      });
-      citationsHtml += '</div>';
+    async function init() {
+      checkStatus();
+      loadThreads();
     }
 
-    // Timings
-    const t = d.timings || {};
-    const timingsHtml = `<div class="timings">
-      <span>retrieval: ${t.retrieval_ms || 0}ms</span>
-      <span>rerank: ${t.rerank_ms || 0}ms</span>
-      <span>generation: ${t.generation_ms || 0}ms</span>
-      <span>chunks: ${d.context_chunks_used || 0}</span>
-      <span>model: ${d.model_used || '—'}</span>
+    async function checkStatus() {
+      try {
+        const r = await fetch(`${API}/indexStatus`);
+        const d = await r.json();
+        const el = document.getElementById('statusBadge');
+        if (d.config) {
+          el.textContent = `${d.config.total_vectors} vectors`;
+          el.className = 'status-badge online';
+        } else {
+          el.textContent = 'NO INDEX';
+          el.className = 'status-badge offline';
+        }
+      } catch { document.getElementById('statusBadge').textContent = 'offline'; }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // VIEW SWITCHING
+    // ═══════════════════════════════════════════════════════════════════
+
+    function switchView(view) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+
+      document.getElementById('chatView').style.display = view === 'chat' ? 'flex' : 'none';
+      document.getElementById('evalView').style.display = view === 'eval' ? 'block' : 'none';
+      document.getElementById('evalView').classList.toggle('active', view === 'eval');
+
+      if (view === 'eval') loadEvalDashboard();
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // THREADS
+    // ═══════════════════════════════════════════════════════════════════
+
+    async function loadThreads() {
+      try {
+        const r = await fetch(`${API}/threads`);
+        const d = await r.json();
+        const list = document.getElementById('threadsList');
+        list.innerHTML = '';
+        (d.threads || []).forEach(t => {
+          const div = document.createElement('div');
+          div.className = `thread-item${t.id === activeThreadId ? ' active' : ''}`;
+          div.onclick = () => selectThread(t.id);
+          const date = new Date(t.created_at).toLocaleDateString();
+          div.innerHTML = `
+        <div class="thread-title">${escapeHtml(t.title)}</div>
+        <div class="thread-meta">${t.entry_count} entries · ${date}</div>
+      `;
+          list.appendChild(div);
+        });
+      } catch (e) { console.error('Failed to load threads:', e); }
+    }
+
+    async function createThread() {
+      const title = prompt('Thread name:', `Research ${new Date().toLocaleDateString()}`);
+      if (!title) return;
+      try {
+        const r = await fetch(`${API}/threads`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title }),
+        });
+        const d = await r.json();
+        activeThreadId = d.id;
+        conversationHistory = [];
+        document.getElementById('messages').innerHTML = `
+      <div class="msg assistant">
+        <div class="bubble">Thread "${escapeHtml(title)}" created. Your queries will be saved to this thread.
+Ask questions to build your evidence base, then generate artifacts from the panel.</div>
+      </div>`;
+        document.getElementById('artifactPanel').classList.add('active');
+        loadThreads();
+      } catch (e) { alert('Failed to create thread: ' + e.message); }
+    }
+
+    async function selectThread(id) {
+      activeThreadId = id;
+      conversationHistory = [];
+      document.getElementById('artifactPanel').classList.add('active');
+
+      try {
+        const r = await fetch(`${API}/threads/${id}`);
+        const thread = await r.json();
+        const messagesEl = document.getElementById('messages');
+        messagesEl.innerHTML = `<div class="msg assistant">
+      <div class="bubble">Thread: "${escapeHtml(thread.title)}" — ${thread.entries.length} entries loaded.</div>
     </div>`;
 
-    addMessage('assistant', escapeHtml(d.answer || 'No answer.') + citationsHtml + timingsHtml, true);
+        thread.entries.forEach(entry => {
+          addMessage('user', entry.query);
+          let content = renderMathAnswer(entry.answer);
+          if (entry.citations && entry.citations.length) {
+            content += buildCitationsHtml(entry.citations);
+          }
+          if (entry.trust_signals && entry.trust_signals.missing_evidence) {
+            content += buildTrustBannerHtml(entry.trust_signals);
+          }
+          addMessage('assistant', content, true);
+          conversationHistory.push({ role: 'user', content: entry.query });
+          conversationHistory.push({ role: 'assistant', content: entry.answer });
+        });
+      } catch (e) { console.error('Failed to load thread:', e); }
 
-    // Update conversation history
-    conversationHistory.push({ role: 'user', content: query });
-    conversationHistory.push({ role: 'assistant', content: d.answer || '' });
-
-  } catch (e) {
-    document.getElementById(loadingId)?.remove();
-    addMessage('assistant', `❌ Error: ${e.message}`);
-  }
-
-  document.getElementById('sendBtn').disabled = false;
-  document.getElementById('queryInput').focus();
-}
-
-function addMessage(role, content, isHtml = false) {
-  const div = document.createElement('div');
-  div.className = `msg ${role}`;
-  const id = 'msg-' + Date.now() + Math.random().toString(36).substr(2, 5);
-  div.id = id;
-  div.innerHTML = `<div class="bubble">${isHtml ? content : escapeHtml(content)}</div>`;
-  document.getElementById('messages').appendChild(div);
-  div.scrollIntoView({ behavior: 'smooth' });
-  return id;
-}
-
-function escapeHtml(text) {
-  const d = document.createElement('div');
-  d.textContent = text;
-  return d.innerHTML;
-}
-
-// ── Sidebar actions ───────────────────────────────────────────
-async function fetchPapers() {
-  const count = parseInt(document.getElementById('fetchCount').value) || 20;
-  document.getElementById('buildInfo').textContent = 'Fetching papers…';
-  try {
-    const r = await fetch(`${API}/getPapers`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ max_papers: count }),
-    });
-    const d = await r.json();
-    document.getElementById('buildInfo').textContent = `✅ Downloaded ${d.downloaded} papers`;
-  } catch (e) {
-    document.getElementById('buildInfo').textContent = `❌ ${e.message}`;
-  }
-}
-
-async function buildIndex(forceRebuild) {
-  const endpoint = forceRebuild ? '/rebuildEmbeddings' : '/buildEmbeddings';
-  document.getElementById('buildInfo').textContent = 'Starting build…';
-  try {
-    const r = await fetch(`${API}${endpoint}`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chunk_size: 500, overlap: 80, force_rebuild: forceRebuild }),
-    });
-    const d = await r.json();
-    document.getElementById('buildInfo').textContent = `${d.status} — ${d.mode}. Poll /buildStatus.`;
-    // Auto-poll
-    setTimeout(checkBuildStatus, 3000);
-  } catch (e) {
-    document.getElementById('buildInfo').textContent = `❌ ${e.message}`;
-  }
-}
-
-async function checkBuildStatus() {
-  try {
-    const r = await fetch(`${API}/buildStatus`);
-    const d = await r.json();
-    const info = document.getElementById('buildInfo');
-    if (d.state === 'building') {
-      info.textContent = `⏳ Building… ${d.detail || ''}`;
-      setTimeout(checkBuildStatus, 3000);
-    } else if (d.state === 'done') {
-      const det = d.detail || {};
-      info.textContent = `✅ Done — ${det.chunks || det.total_chunks || '?'} chunks`;
-      checkStatus();
-    } else if (d.state === 'error') {
-      info.textContent = `❌ ${d.detail}`;
-    } else {
-      info.textContent = `State: ${d.state}`;
+      loadThreads();
+      document.getElementById('artifactResults').innerHTML = '';
     }
-  } catch (e) {
-    document.getElementById('buildInfo').textContent = `❌ ${e.message}`;
-  }
-}
 
-async function runEval() {
-  document.getElementById('evalInfo').textContent = 'Running evaluation…';
-  try {
-    const r = await fetch(`${API}/evaluate`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ mode: 'embedding', num_queries: 20 }),
-    });
-    const d = await r.json();
-    document.getElementById('evalInfo').textContent = `${d.status} — ${d.queries} queries (${d.mode})`;
-  } catch (e) {
-    document.getElementById('evalInfo').textContent = `❌ ${e.message}`;
-  }
-}
+    // ═══════════════════════════════════════════════════════════════════
+    // CHAT
+    // ═══════════════════════════════════════════════════════════════════
 
-async function getEvalReport() {
-  try {
-    const r = await fetch(`${API}/evalReport`);
-    const d = await r.json();
-    if (d.avg_context_precision !== undefined) {
-      const summary = `CP: ${d.avg_context_precision} | AR: ${d.avg_answer_relevancy} | FF: ${d.avg_faithfulness}`;
-      document.getElementById('evalInfo').textContent = summary;
-      addMessage('assistant',
-        `📊 Evaluation Report (${d.mode})\n` +
-        `Queries: ${d.total_queries}\n` +
-        `Context Precision: ${d.avg_context_precision}\n` +
-        `Answer Relevancy:  ${d.avg_answer_relevancy}\n` +
-        `Faithfulness:      ${d.avg_faithfulness}\n` +
-        `Avg Retrieval:     ${d.avg_retrieval_ms}ms\n` +
-        `Avg Rerank:        ${d.avg_rerank_ms}ms\n` +
-        `Avg Generation:    ${d.avg_generation_ms}ms`
-      );
-    } else {
-      document.getElementById('evalInfo').textContent = d.message || 'No report yet.';
+    async function sendMessage() {
+      const input = document.getElementById('queryInput');
+      const query = input.value.trim();
+      if (!query) return;
+
+      input.value = '';
+      document.getElementById('sendBtn').disabled = true;
+      addMessage('user', query);
+
+      const loadingId = addMessage('assistant',
+        '<div class="loading-indicator"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div> Searching & generating…', true);
+
+      const topK = parseInt(document.getElementById('topK').value) || 5;
+      const useReranker = document.getElementById('useReranker').value === 'true';
+
+      try {
+        const body = {
+          query,
+          conversation_history: conversationHistory.slice(-6),
+          top_k: topK,
+          use_reranker: useReranker,
+        };
+        if (activeThreadId) body.thread_id = activeThreadId;
+
+        const r = await fetch(`${API}/chat`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const d = await r.json();
+
+        document.getElementById(loadingId)?.remove();
+
+        let content = renderMathAnswer(d.answer || 'No answer.');
+        content += buildCitationsHtml(d.citations || []);
+
+        // Trust signals
+        const trust = d.trust_signals || {};
+        if (trust.missing_evidence) {
+          content += buildTrustBannerHtml(trust);
+        }
+
+        // Timings
+        const t = d.timings || {};
+        content += `<div class="timings-bar">
+      <span>⚡ ${t.retrieval_ms || 0}ms retrieval</span>
+      <span>🔄 ${t.rerank_ms || 0}ms rerank</span>
+      <span>🤖 ${t.generation_ms || 0}ms generation</span>
+      <span>📄 ${d.context_chunks_used || 0} chunks</span>
+    </div>`;
+
+        addMessage('assistant', content, true);
+
+        conversationHistory.push({ role: 'user', content: query });
+        conversationHistory.push({ role: 'assistant', content: d.answer || '' });
+
+        if (activeThreadId) loadThreads();
+
+      } catch (e) {
+        document.getElementById(loadingId)?.remove();
+        addMessage('assistant', `<span style="color:var(--error)">❌ Error: ${escapeHtml(e.message)}</span>`, true);
+      }
+
+      document.getElementById('sendBtn').disabled = false;
+      document.getElementById('queryInput').focus();
     }
-  } catch (e) {
-    document.getElementById('evalInfo').textContent = `❌ ${e.message}`;
-  }
-}
-</script>
+
+    function buildCitationsHtml(citations) {
+      if (!citations || !citations.length) return '';
+      let html = '<div class="citations-block"><div class="cite-header">Sources</div>';
+      citations.forEach((c, i) => {
+        const page = c.page_number > 0 ? `p.${c.page_number}` : '';
+        const score = (c.relevance_score || 0);
+        const pct = Math.min(Math.max(score * 100, 5), 100);
+        html += `<div class="citation-card">
+      <span class="citation-num">[${i + 1}]</span>
+      <span class="citation-title">${escapeHtml(c.paper_title || 'Unknown')}</span>
+      <span class="citation-meta">§${c.section || '?'} ${page} <span class="score-bar"><span class="score-bar-fill" style="width:${pct}%"></span></span></span>
+    </div>`;
+      });
+      html += '</div>';
+      return html;
+    }
+
+    function buildTrustBannerHtml(trust) {
+      let html = '<div class="trust-banner warning"><span class="trust-icon">⚠️</span><div>';
+      html += '<strong>Evidence gap detected.</strong> The retrieved sources may not fully cover this query.';
+      if (trust.suggested_followup) {
+        html += `<br><span class="followup-query" onclick="useFollowup(this)" data-query="${escapeAttr(trust.suggested_followup)}">${escapeHtml(trust.suggested_followup)}</span>`;
+      }
+      html += '</div></div>';
+      return html;
+    }
+
+    function useFollowup(el) {
+      document.getElementById('queryInput').value = el.dataset.query;
+      document.getElementById('queryInput').focus();
+    }
+
+    function addMessage(role, content, isHtml = false) {
+      const div = document.createElement('div');
+      div.className = `msg ${role}`;
+      const id = 'msg-' + Date.now() + Math.random().toString(36).substr(2, 5);
+      div.id = id;
+      div.innerHTML = `<div class="bubble">${isHtml ? content : escapeHtml(content)}</div>`;
+      document.getElementById('messages').appendChild(div);
+      // Render KaTeX math in the new message
+      try {
+        if (typeof renderMathInElement === 'function') {
+          renderMathInElement(div, {
+            delimiters: [
+              { left: '$$', right: '$$', display: true },
+              { left: '$', right: '$', display: false },
+              { left: '\\(', right: '\\)', display: false },
+              { left: '\\[', right: '\\]', display: true },
+            ],
+            throwOnError: false,
+          });
+        }
+      } catch (e) { console.warn('KaTeX render error:', e); }
+      div.scrollIntoView({ behavior: 'smooth' });
+      return id;
+    }
+
+    function escapeHtml(text) {
+      const d = document.createElement('div');
+      d.textContent = text;
+      return d.innerHTML;
+    }
+
+    /**
+     * Process LLM answer text for display.
+     * Escapes HTML and does minimal cleanup. KaTeX auto-render
+     * handles any $...$ or $$...$$ the LLM outputs.
+     */
+    function renderMathAnswer(text) {
+      let t = text || '';
+
+      // Remove \tag{N} artifacts that KaTeX can't render outside display mode
+      t = t.replace(/\\tag\{\d+\}/g, '');
+
+      // Collapse 3+ consecutive newlines to 2
+      t = t.replace(/\n{3,}/g, '\n\n');
+
+      // Escape HTML
+      return escapeHtml(t);
+    }
+
+    function escapeAttr(text) {
+      return text.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // ARTIFACTS
+    // ═══════════════════════════════════════════════════════════════════
+
+    async function generateArtifact(type) {
+      if (!activeThreadId) { alert('Select or create a thread first.'); return; }
+      const results = document.getElementById('artifactResults');
+      results.innerHTML = `<div class="artifact-result"><div class="loading-indicator"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div> Generating ${type}…</div>`;
+
+      try {
+        const r = await fetch(`${API}/artifacts/${type}`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ thread_id: activeThreadId }),
+        });
+        const d = await r.json();
+
+        if (d.error) { results.innerHTML = `<div class="artifact-result" style="color:var(--error)">${escapeHtml(d.error)}</div>`; return; }
+
+        if (type === 'evidenceTable') renderEvidenceTable(d);
+        else if (type === 'bibliography') renderBibliography(d);
+        else if (type === 'synthesisMemo') renderMemo(d);
+      } catch (e) {
+        results.innerHTML = `<div class="artifact-result" style="color:var(--error)">❌ ${escapeHtml(e.message)}</div>`;
+      }
+    }
+
+    function renderEvidenceTable(d) {
+      const results = document.getElementById('artifactResults');
+      let html = `<div class="artifact-result">
+    <h4>📋 Evidence Table (${d.total_claims} claims, ${d.total_sources} sources)</h4>
+    <table class="artifact-table">
+      <thead><tr><th>#</th><th>Claim</th><th>Confidence</th><th>Citation</th></tr></thead>
+      <tbody>`;
+      (d.claims || []).forEach((c, i) => {
+        const confClass = c.confidence === 'High' ? 'conf-high' : c.confidence === 'Medium' ? 'conf-medium' : 'conf-low';
+        html += `<tr>
+      <td>${i + 1}</td>
+      <td title="${escapeAttr(c.evidence_snippet || '')}">${escapeHtml(c.claim || '')}</td>
+      <td><span class="conf-badge ${confClass}">${c.confidence || '?'}</span></td>
+      <td style="font-size:10px;color:var(--text-muted)">${escapeHtml(c.citation || '')}</td>
+    </tr>`;
+      });
+      html += '</tbody></table>';
+      html += buildExportButtons('evidenceTable');
+      html += '</div>';
+      results.innerHTML = html;
+    }
+
+    function renderBibliography(d) {
+      const results = document.getElementById('artifactResults');
+      let html = `<div class="artifact-result"><h4>📚 Annotated Bibliography (${d.total_sources} sources)</h4>`;
+      (d.sources || []).forEach((s, i) => {
+        html += `<div style="margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border);">
+      <div style="font-weight:600;color:var(--text-primary);font-size:12px;">${i + 1}. ${escapeHtml(s.source || '')}</div>
+      <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">
+        <strong>Method:</strong> ${escapeHtml(s.method || 'N/A')}<br>
+        <strong>Limitations:</strong> ${escapeHtml(s.limitations || 'N/A')}<br>
+        <strong>Why it matters:</strong> ${escapeHtml(s.why_it_matters || 'N/A')}
+      </div>
+    </div>`;
+      });
+      html += buildExportButtons('bibliography');
+      html += '</div>';
+      results.innerHTML = html;
+    }
+
+    function renderMemo(d) {
+      const results = document.getElementById('artifactResults');
+      const memoHtml = (d.memo_text || '').replace(/\n/g, '<br>');
+      let html = `<div class="artifact-result">
+    <h4>📝 Synthesis Memo (~${d.word_count} words)</h4>
+    <div style="font-size:12px;line-height:1.7;color:var(--text-secondary);">${memoHtml}</div>`;
+      if (d.references && d.references.length) {
+        html += '<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);font-size:11px;color:var(--text-muted);">';
+        html += '<strong>References:</strong><br>';
+        d.references.forEach(r => { html += `[${r.number}] ${escapeHtml(r.source || '')}<br>`; });
+        html += '</div>';
+      }
+      html += buildExportButtons('synthesisMemo');
+      html += '</div>';
+      results.innerHTML = html;
+    }
+
+    function buildExportButtons(type) {
+      return `<div class="export-row">
+    <button class="btn btn-ghost btn-sm" onclick="downloadExport('${type}','markdown')">⬇ Markdown</button>
+    ${type !== 'synthesisMemo' ? `<button class="btn btn-ghost btn-sm" onclick="downloadExport('${type}','csv')">⬇ CSV</button>` : ''}
+  </div>`;
+    }
+
+    async function downloadExport(type, format) {
+      if (!activeThreadId) return;
+      try {
+        const url = `${API}/export/${activeThreadId}/${type}?format=${format}`;
+        const r = await fetch(url);
+        const blob = await r.blob();
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `${type}_${activeThreadId}.${format === 'csv' ? 'csv' : 'md'}`;
+        a.click();
+      } catch (e) { alert('Export failed: ' + e.message); }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // EVAL DASHBOARD
+    // ═══════════════════════════════════════════════════════════════════
+
+    async function loadEvalDashboard() {
+      try {
+        const r = await fetch(`${API}/evalReport`);
+        const d = await r.json();
+        if (d.avg_context_precision === undefined) {
+          document.getElementById('evalContent').innerHTML = `<div style="text-align:center;padding:60px;color:var(--text-muted);">
+        <p style="font-size:16px;margin-bottom:12px;">${d.message || 'No report available'}</p>
+        <button class="btn btn-primary" style="width:auto;padding:10px 24px;" onclick="runEval()">Run Evaluation</button>
+      </div>`;
+          return;
+        }
+        renderEvalDashboard(d);
+      } catch (e) {
+        document.getElementById('evalContent').innerHTML = `<div style="color:var(--error);padding:40px;text-align:center;">❌ ${e.message}</div>`;
+      }
+    }
+
+    function renderEvalDashboard(d) {
+      const cp = d.avg_context_precision;
+      const ar = d.avg_answer_relevancy;
+      const ff = d.avg_faithfulness;
+
+      const results = d.results || [];
+      const sortedByCP = [...results].sort((a, b) => b.context_precision - a.context_precision);
+      const sortedByAR = [...results].sort((a, b) => b.answer_relevancy - a.answer_relevancy);
+
+      let html = `
+    <div class="metric-cards">
+      <div class="metric-card">
+        <div class="metric-label">Context Precision</div>
+        <div class="metric-value color-green">${cp.toFixed(3)}</div>
+        <div class="metric-bar"><div class="metric-bar-fill fill-green" style="width:${cp * 100}%"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Answer Relevancy</div>
+        <div class="metric-value color-blue">${ar.toFixed(3)}</div>
+        <div class="metric-bar"><div class="metric-bar-fill fill-blue" style="width:${ar * 100}%"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Faithfulness</div>
+        <div class="metric-value color-purple">${ff.toFixed(3)}</div>
+        <div class="metric-bar"><div class="metric-bar-fill fill-purple" style="width:${ff * 100}%"></div></div>
+      </div>
+    </div>
+
+    <div class="perf-cards">
+      <div class="perf-card">
+        <div class="perf-label">Avg Retrieval</div>
+        <div class="perf-value">${d.avg_retrieval_ms.toFixed(0)}ms</div>
+      </div>
+      <div class="perf-card">
+        <div class="perf-label">Avg Rerank</div>
+        <div class="perf-value">${d.avg_rerank_ms.toFixed(0)}ms</div>
+      </div>
+      <div class="perf-card">
+        <div class="perf-label">Avg Generation</div>
+        <div class="perf-value">${d.avg_generation_ms.toFixed(0)}ms</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div class="examples-section">
+        <h3>🏆 Best by Context Precision</h3>
+        ${sortedByCP.slice(0, 3).map(r => `<div class="example-row">
+          <span class="example-query">${escapeHtml(r.query)}</span>
+          <span class="example-score">${r.context_precision.toFixed(3)}</span>
+        </div>`).join('')}
+      </div>
+      <div class="examples-section">
+        <h3>⚠️ Weakest by Context Precision</h3>
+        ${sortedByCP.slice(-3).reverse().map(r => `<div class="example-row">
+          <span class="example-query">${escapeHtml(r.query)}</span>
+          <span class="example-score" style="color:var(--warning)">${r.context_precision.toFixed(3)}</span>
+        </div>`).join('')}
+      </div>
+      <div class="examples-section">
+        <h3>🏆 Best by Answer Relevancy</h3>
+        ${sortedByAR.slice(0, 3).map(r => `<div class="example-row">
+          <span class="example-query">${escapeHtml(r.query)}</span>
+          <span class="example-score">${r.answer_relevancy.toFixed(3)}</span>
+        </div>`).join('')}
+      </div>
+      <div class="examples-section">
+        <h3>⚠️ Weakest by Answer Relevancy</h3>
+        ${sortedByAR.slice(-3).reverse().map(r => `<div class="example-row">
+          <span class="example-query">${escapeHtml(r.query)}</span>
+          <span class="example-score" style="color:var(--warning)">${r.answer_relevancy.toFixed(3)}</span>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <div style="margin-top:20px;text-align:center;">
+      <button class="btn btn-ghost" style="width:auto;padding:8px 20px;" onclick="runEval()">🔄 Re-run Evaluation (20 queries)</button>
+    </div>
+  `;
+
+      document.getElementById('evalContent').innerHTML = html;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // SIDEBAR ACTIONS
+    // ═══════════════════════════════════════════════════════════════════
+
+    async function fetchPapers() {
+      const count = parseInt(document.getElementById('fetchCount').value) || 20;
+      document.getElementById('buildInfo').textContent = 'Fetching papers…';
+      try {
+        const r = await fetch(`${API}/getPapers`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ max_papers: count }),
+        });
+        const d = await r.json();
+        document.getElementById('buildInfo').textContent = `✅ Downloaded ${d.downloaded} papers`;
+      } catch (e) { document.getElementById('buildInfo').textContent = `❌ ${e.message}`; }
+    }
+
+    async function buildIndex(forceRebuild) {
+      const endpoint = forceRebuild ? '/rebuildEmbeddings' : '/buildEmbeddings';
+      document.getElementById('buildInfo').textContent = 'Starting build…';
+      try {
+        const r = await fetch(`${API}${endpoint}`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chunk_size: 500, overlap: 80, force_rebuild: forceRebuild }),
+        });
+        const d = await r.json();
+        document.getElementById('buildInfo').textContent = `${d.status} — ${d.mode}`;
+        setTimeout(checkBuildStatus, 3000);
+      } catch (e) { document.getElementById('buildInfo').textContent = `❌ ${e.message}`; }
+    }
+
+    async function checkBuildStatus() {
+      try {
+        const r = await fetch(`${API}/buildStatus`);
+        const d = await r.json();
+        const info = document.getElementById('buildInfo');
+        if (d.state === 'building') {
+          info.textContent = `⏳ Building… ${d.detail || ''}`;
+          setTimeout(checkBuildStatus, 3000);
+        } else if (d.state === 'done') {
+          info.textContent = `✅ Done — ${(d.detail || {}).chunks || '?'} chunks`;
+          checkStatus();
+        } else if (d.state === 'error') {
+          info.textContent = `❌ ${d.detail}`;
+        } else {
+          info.textContent = `State: ${d.state}`;
+        }
+      } catch (e) { document.getElementById('buildInfo').textContent = `❌ ${e.message}`; }
+    }
+
+    async function runEval() {
+      try {
+        const r = await fetch(`${API}/evaluate`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mode: 'embedding', num_queries: 20 }),
+        });
+        const d = await r.json();
+        document.getElementById('evalContent').innerHTML = `<div style="text-align:center;padding:60px;color:var(--text-secondary);">
+      <div class="loading-indicator"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+      <p style="margin-top:12px;">Evaluation running… ${d.queries} queries (${d.mode} mode)</p>
+      <p style="font-size:11px;color:var(--text-muted);margin-top:8px;">This may take a few minutes. The dashboard will auto-refresh.</p>
+    </div>`;
+        pollEvalStatus();
+      } catch (e) { alert('Failed to start eval: ' + e.message); }
+    }
+
+    async function pollEvalStatus() {
+      await new Promise(r => setTimeout(r, 10000));
+      try {
+        const r = await fetch(`${API}/evalReport`);
+        const d = await r.json();
+        if (d.avg_context_precision !== undefined) {
+          renderEvalDashboard(d);
+        } else {
+          pollEvalStatus();
+        }
+      } catch { pollEvalStatus(); }
+    }
+
+    // ── Init ────────────────────────────────────────────────
+    init();
+  </script>
 </body>
+
 </html>
